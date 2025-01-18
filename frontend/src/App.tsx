@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Theme } from "@radix-ui/themes";
+import "./App.css";
+import { useState } from "react";
+import Footer from "./components/footer/footer";
+import NavBar from "./components/navbar/navbar";
+import { Route, Routes } from "react-router";
+import Page from "./pages/page";
+import SignUp from "./pages/auth/signup/signup";
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const [MOD, setThemeMod] = useState<"light" | "dark">("dark");
+    const toggleTheme = () => {
+        if (MOD == "dark") setThemeMod("light");
+        else setThemeMod("dark");
+    };
+    return (
+        <Theme
+            accentColor="grass"
+            grayColor="sage"
+            scaling="90%"
+            appearance={MOD}
+        >
+            <NavBar mod={MOD} toggleTheme={toggleTheme} />
+            <Routes>
+                <Route element={<Page />}>
+                    <Route path="/" element={<h1>Home</h1>} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/signin" element={<h1>Sign In</h1>} />
+                    <Route path="/dashboard" element={<h1>Dashboard</h1>} />
+                </Route>
+            </Routes>
+            <Footer />
+        </Theme>
+    );
 }
 
-export default App
+export default App;
