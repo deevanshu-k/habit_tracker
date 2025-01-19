@@ -16,7 +16,12 @@ const SignIn: React.FC = () => {
     const navigate = useNavigate();
 
     return (
-        <Flex direction="column" align={"center"} className="py-16 min-h-screen">
+        <Flex
+            direction="column"
+            align={"center"}
+            justify={"center"}
+            className="py-16 min-h-screen"
+        >
             <Box py="7" mb="6">
                 <Heading size={"8"} weight={"bold"} align={"center"}>
                     Welcome back 👋
@@ -72,6 +77,7 @@ const SignIn: React.FC = () => {
                         ml="1"
                         color="grass"
                         className="hover:underline cursor-pointer"
+                        onClick={() => navigate("/reset-password")}
                     >
                         Forgot Password?
                     </Text>
