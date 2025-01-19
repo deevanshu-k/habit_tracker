@@ -1,52 +1,45 @@
-import {
-    Box,
-    Button,
-    Card,
-    Flex,
-    Heading,
-    Separator,
-    Text,
-} from "@radix-ui/themes";
-import React from "react";
-import GoogleIcon from "../../../components/custom-icons/googleicon";
+import { Box, Flex, Heading, Text } from "@radix-ui/themes";
+import React, { useState } from "react";
+import VerifyOtpCard from "./verifyotpcard/verifyotpcard";
+import SignUpCard from "./signupcard/signupcard";
 
 const SignUp: React.FC = () => {
+    const [verify, setVerifyOtp] = useState<boolean>(false);
+
     return (
-        <Flex direction="column" align={"center"} className="h-screen">
-            <Box p="7">
-                <Heading size={"7"} weight={"bold"} align={"center"}>
-                    Transform Your Life, One Habit at a Time 🌟
+        <Flex
+            direction="column"
+            align={"center"}
+            justify={"center"}
+            className="py-16 min-h-screen"
+        >
+            <Box pb="7" mb="2">
+                <Heading size={"8"} weight={"bold"} align={"center"}>
+                    {verify
+                        ? "🔐 Verify your email!"
+                        : "Transform Your Life, One Habit at a Time 🌟"}
                 </Heading>
                 <Text
                     as="p"
                     size={"5"}
-                    weight={"bold"}
                     color="gray"
+                    weight="medium"
                     align={"center"}
+                    mt="2"
                 >
-                    Small Steps, Big Changes 🚀 Start Your Journey Today!
+                    {verify
+                        ? "One Time Password (OTP) has been sent via Email"
+                        : "Small Steps, Big Changes 🚀 Start Your Journey Today!"}
                 </Text>
             </Box>
-            <Card className="min-w-[420px] p-5">
-                <Button variant="soft" className="flex h-[50px] w-[100%] pl-4 cursor-pointer">
-                    <div className="w-[20px]">
-                        <GoogleIcon size={48} />
-                    </div>
-                    <Separator orientation="vertical" ml={"2"} size={"2"} />
-                    <div className="flex-1">
-                        <Text size={"4"} className="tracking-widest">
-                            Sign in with Google
-                        </Text>
-                    </div>
-                </Button>
-                <Box my={"4"} className="flex align-middle justify-evenly">
-                    <Separator mt={"3"} size={"3"} />
-                    <Text as="p" align={"center"}>
-                        Or, register with your email
-                    </Text>
-                    <Separator mt={"3"} size={"3"} />
-                </Box>
-            </Card>
+            {verify ? (
+                <VerifyOtpCard
+                    editSignForm={() => setVerifyOtp(false)}
+                    length={6}
+                />
+            ) : (
+                <SignUpCard verifyOtp={() => setVerifyOtp(true)} />
+            )}
         </Flex>
     );
 };

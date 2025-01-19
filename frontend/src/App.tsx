@@ -5,6 +5,7 @@ import Footer from "./components/footer/footer";
 import NavBar from "./components/navbar/navbar";
 import { Route, Routes } from "react-router";
 import Page from "./pages/page";
+import SignIn from "./pages/auth/signin/signin";
 import SignUp from "./pages/auth/signup/signup";
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
                 <Route element={<Page />}>
                     <Route path="/" element={<h1>Home</h1>} />
                     <Route path="/signup" element={<SignUp />} />
-                    <Route path="/signin" element={<h1>Sign In</h1>} />
+                    <Route path="/signin" element={<SignIn />} />
                     <Route path="/dashboard" element={<h1>Dashboard</h1>} />
                 </Route>
             </Routes>
