@@ -8,6 +8,7 @@ import Page from "./pages/page";
 import SignIn from "./pages/auth/signin/signin";
 import SignUp from "./pages/auth/signup/signup";
 import ForgotPassword from "./pages/auth/forgotpassword/forgotpassword";
+import Home from "./pages/home/home";
 
 function App() {
     const [MOD, setThemeMod] = useState<"light" | "dark">("dark");
@@ -25,7 +26,7 @@ function App() {
             <NavBar mod={MOD} toggleTheme={toggleTheme} />
             <Routes>
                 <Route element={<Page />}>
-                    <Route path="/" element={<h1>Home</h1>} />
+                    <Route path="/" element={<Home />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/signin" element={<SignIn />} />
                     <Route

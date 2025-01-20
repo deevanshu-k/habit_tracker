@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  first_name     String
+  last_name      String
+  email          String  @unique
+  pswd_hash      String  @default("")
+  pswd_hash_salt String  @default("")
+  mode           Mode    @default(NORMAL)
+  habits         Habit[]
+  todos          Todo[]
+  Notes          Note[]
+}
+
+model Habit {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  description    String
+  color          Color         @default(Brown)
+  logs           HabitLog[]
+  frequency      Int /* fixedDays(1101101) , weekDays(1-7), monthDays(1-30) */
+  frequency_type FrequencyType
+  is_archived    Boolean       @default(false)
+  is_deleted     Boolean       @default(false)
+  User           User          @relation(fields: [userId], references: [id])
+  userId         String        @db.ObjectId
+}
+
+model HabitLog {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  date    Int
+  month   Int
+  year    Int
+  is_done Boolean @default(false)
+  note    String  @default("")
+  Habit   Habit   @relation(fields: [habitId], references: [id])
+  habitId String  @db.ObjectId
+}
+
+model Todo {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  title   String  @default("")
+  date    Int
+  month   Int
+  year    Int
+  is_done Boolean @default(false)
+  User    User    @relation(fields: [userId], references: [id])
+  userId  String  @db.ObjectId
+}
+
+model Note {
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  tags   String[]
+  note   String   @default("")
+  User   User     @relation(fields: [userId], references: [id])
+  userId String   @db.ObjectId
+}
+
+enum Mode {
+  STRICT
+  NORMAL
+}
+
+enum FrequencyType {
+  FIXED_DAYS
+  NO_OF_DAYS_IN_WEEKS
+  NO_OF_DAYS_IN_MONTHS
+}
+
+enum Color {
+  Gray
+  Mauve
+  Slate
+  Sage
+  Olive
+  Sand
+  Tomato
+  Red
+  Ruby
+  Crimson
+  Pink
+  Plum
+  Purple
+  Violet
+  Iris
+  Indigo
+  Blue
+  Cyan
+  Teal
+  Jade
+  Green
+  Grass
+  Bronze
+  Gold
+  Brown
+  Orange
+  Amber
+  Yellow
+  Lime
+  Mint
+  Sky
+}
