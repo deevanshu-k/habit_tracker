@@ -139,6 +139,13 @@ export const localSignUpVerifyByOTP = {
             // Remove user signup cache
             otpSignUpCacheManager.delete(email);
 
+            // Send welcome mail
+            await sendMail(
+                String(email),
+                "Welcome to habit tracker",
+                `Welcome ${cacheEntry.first_name} ${cacheEntry.last_name}`
+            );
+
             res.status(200).json({
                 code: 200,
                 message: "Welcome to habit tracker!",
