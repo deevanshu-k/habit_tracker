@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+    localSignIn,
     localSignUp,
     localSignUpVerifyByOTP,
 } from "../controllers/auth.controller";
@@ -11,11 +12,7 @@ router.post(
     localSignUpVerifyByOTP.validator,
     localSignUpVerifyByOTP.controller
 );
-router.post(
-    "/local/signin",
-    localSignUpVerifyByOTP.validator,
-    localSignUpVerifyByOTP.controller
-);
+router.post("/local/signin", localSignIn.validator, localSignIn.controller);
 router.post("/local/forgot_pswd", (req, res) => {});
 router.post("/local/forgot_pswd/check_otp", (req, res) => {});
 

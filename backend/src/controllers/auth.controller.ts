@@ -4,7 +4,17 @@ import db from "../services/db.service";
 import { generateOTP } from "../services/otp.service";
 import { otpSignUpCacheManager } from "../services/cache.service";
 import { sendMail } from "../services/mail.service";
+import * as jwt from "jsonwebtoken";
 import * as bcrypt from "bcrypt";
+import {
+    MAIL_SENT_OTP_FOR_SIGNUP,
+    OTP_EXPIRED,
+    SOMETHING_WENT_WRONG,
+    USER_WITH_THIS_EMAIL_ALREADY_EXIST,
+    WELCOME,
+    WRONG_EMAIL_OR_PASSWORD,
+    WRONG_OTP,
+} from "../utils/message.util";
 
 export const localSignUp = {
     validator: celebrate({
@@ -38,7 +48,7 @@ export const localSignUp = {
             if (user) {
                 res.status(409).json({
                     code: 409,
-                    message: "User with this email already exist!",
+                    message: USER_WITH_THIS_EMAIL_ALREADY_EXIST,
                 });
                 return;
             }
@@ -62,12 +72,12 @@ export const localSignUp = {
 
             res.status(200).json({
                 code: 200,
-                messsage: "Mail is send to your email!",
+                messsage: MAIL_SENT_OTP_FOR_SIGNUP,
             });
         } catch (error) {
             res.json({
                 code: 500,
-                message: "Something went wrong!",
+                message: SOMETHING_WENT_WRONG,
             });
         }
     },
@@ -93,7 +103,7 @@ export const localSignUpVerifyByOTP = {
             if (user) {
                 res.status(409).json({
                     code: 409,
-                    message: "User with this email already exist!",
+                    message: USER_WITH_THIS_EMAIL_ALREADY_EXIST,
                 });
                 return;
             }
@@ -103,7 +113,7 @@ export const localSignUpVerifyByOTP = {
             if (!cacheEntry) {
                 res.status(409).json({
                     code: 500,
-                    message: "OTP expired!",
+                    message: OTP_EXPIRED,
                 });
                 return;
             }
@@ -112,7 +122,7 @@ export const localSignUpVerifyByOTP = {
             if (cacheEntry.otp !== otp) {
                 res.status(409).json({
                     code: 409,
-                    message: "Wrong OTP!",
+                    message: WRONG_OTP,
                 });
                 return;
             }
@@ -148,12 +158,82 @@ export const localSignUpVerifyByOTP = {
 
             res.status(200).json({
                 code: 200,
-                message: "Welcome to habit tracker!",
+                message: WELCOME,
             });
         } catch (error) {
             res.status(500).json({
                 code: 500,
-                message: "Something went wrong!",
+                message: SOMETHING_WENT_WRONG,
+            });
+        }
+    },
+};
+
+export const localSignIn = {
+    validator: celebrate({
+        body: Joi.object({
+            email: Joi.string().email().required(),
+            password: Joi.string().required(),
+        }),
+    }),
+
+    controller: async (req: Request, res: Response) => {
+        try {
+            const { email, password } = req.body;
+
+            // Get user
+            let user = await db.user.findFirst({
+                where: {
+                    email: email,
+                },
+            });
+            if (!user) {
+                res.status(401).json({
+                    code: 401,
+                    message: WRONG_EMAIL_OR_PASSWORD,
+                });
+                return;
+            }
+
+            // Check password
+            const isMatch = await bcrypt.compare(password, user.pswd_hash);
+            if (!isMatch) {
+                res.status(401).json({
+                    code: 401,
+                    message: WRONG_EMAIL_OR_PASSWORD,
+                });
+                return;
+            }
+
+            // Generate Token
+            const token = jwt.sign(
+                {
+                    id: user.id,
+                    email: user.email,
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                },
+                String(process.env.JWT_SECRET),
+                {
+                    expiresIn: "1h",
+                }
+            );
+
+            // Set token to cookie
+            res.cookie("auth", token, {
+                httpOnly: true, // Prevents access via JavaScript
+                secure: false, // Set to true for HTTPS
+                sameSite: "lax", // 'None' if cross-origin; 'Lax' is fine for localhost
+            });
+
+            res.status(200).json({
+                code: 200,
+                message: WELCOME,
+            });
+        } catch (error) {
+            res.status(500).json({
+                code: 500,
+                message: SOMETHING_WENT_WRONG,
             });
         }
     },
