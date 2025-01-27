@@ -3,6 +3,8 @@ import router from "./routes";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import { errors } from "celebrate";
+import pinoHttp from "pino-http";
+import logger from "./services/logger.service";
 
 // Import env variables
 dotenv.config();
@@ -11,6 +13,8 @@ const HOST = String(process.env.HOST);
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use(pinoHttp({ logger: logger }));
 
 app.use("/v1/api", router);
 
