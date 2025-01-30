@@ -9,35 +9,51 @@ import SignIn from "./pages/auth/signin/signin";
 import SignUp from "./pages/auth/signup/signup";
 import ForgotPassword from "./pages/auth/forgotpassword/forgotpassword";
 import Home from "./pages/home/home";
+import { Provider } from "react-redux";
+import store from "./store/store";
+import ProtectedRoute from "./components/protectedroute/protectedroute";
+
+const getSystemTheme = () => {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+};
 
 function App() {
-    const [MOD, setThemeMod] = useState<"light" | "dark">("dark");
+    const [MOD, setThemeMod] = useState<"light" | "dark">(getSystemTheme());
     const toggleTheme = () => {
         if (MOD == "dark") setThemeMod("light");
         else setThemeMod("dark");
     };
     return (
-        <Theme
-            accentColor="grass"
-            grayColor="sage"
-            scaling="90%"
-            appearance={MOD}
-        >
-            <NavBar mod={MOD} toggleTheme={toggleTheme} />
-            <Routes>
-                <Route element={<Page />}>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/signup" element={<SignUp />} />
-                    <Route path="/signin" element={<SignIn />} />
-                    <Route
-                        path="/reset-password"
-                        element={<ForgotPassword />}
-                    />
-                    <Route path="/dashboard" element={<h1>Dashboard</h1>} />
-                </Route>
-            </Routes>
-            <Footer />
-        </Theme>
+        <Provider store={store}>
+            <Theme
+                accentColor="grass"
+                grayColor="sage"
+                scaling="90%"
+                appearance={MOD}
+            >
+                <NavBar mod={MOD} toggleTheme={toggleTheme} />
+                <Routes>
+                    <Route element={<Page />}>
+                        <Route element={<ProtectedRoute />}>
+                            <Route
+                                path="/dashboard"
+                                element={<h1>Dashboard</h1>}
+                            />
+                        </Route>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/signup" element={<SignUp />} />
+                        <Route path="/signin" element={<SignIn />} />
+                        <Route
+                            path="/reset-password"
+                            element={<ForgotPassword />}
+                        />
+                    </Route>
+                </Routes>
+                <Footer />
+            </Theme>
+        </Provider>
     );
 }
 
