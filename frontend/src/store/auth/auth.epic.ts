@@ -1,6 +1,6 @@
 import { ofType } from "redux-observable";
 import { AuthActions, SIGNIN, signinSuccess } from "./auth.action";
-import { mergeMap, Observable, of, switchMap, tap } from "rxjs";
+import { Observable, of, switchMap } from "rxjs";
 
 export const signinEpic = (action$: Observable<any>): Observable<AuthActions> =>
     action$.pipe(

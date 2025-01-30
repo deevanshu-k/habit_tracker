@@ -8,12 +8,20 @@ import {
     Text,
     TextField,
 } from "@radix-ui/themes";
-import React from "react";
+import React, { useEffect } from "react";
 import GoogleIcon from "../../../components/custom-icons/googleicon";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { signin } from "../../../store/auth/auth.action";
+import { UnknownAction } from "redux";
 
 const SignIn: React.FC = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const onSubmit = () => {
+        dispatch(signin() as UnknownAction);
+    };
 
     return (
         <Flex
@@ -87,6 +95,7 @@ const SignIn: React.FC = () => {
                     className="flex h-[40px] w-[100%] pl-4 cursor-pointer"
                     size="3"
                     mt="5"
+                    onClick={onSubmit}
                 >
                     Sign in
                 </Button>

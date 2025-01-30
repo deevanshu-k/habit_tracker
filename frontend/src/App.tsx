@@ -12,6 +12,7 @@ import Home from "./pages/home/home";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import ProtectedRoute from "./components/protectedroute/protectedroute";
+import UnProtectedRoute from "./components/unprotectedroute/unprotectedroute";
 
 const getSystemTheme = () => {
     return window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -41,14 +42,21 @@ function App() {
                                 path="/dashboard"
                                 element={<h1>Dashboard</h1>}
                             />
+                            <Route path="/today" element={<h1>Todays TODO</h1>} />
+                            <Route
+                                path="/habits"
+                                element={<h1>Habits</h1>}
+                            />
+                        </Route>
+                        <Route element={<UnProtectedRoute />}>
+                            <Route path="/signup" element={<SignUp />} />
+                            <Route path="/signin" element={<SignIn />} />
+                            <Route
+                                path="/reset-password"
+                                element={<ForgotPassword />}
+                            />
                         </Route>
                         <Route path="/" element={<Home />} />
-                        <Route path="/signup" element={<SignUp />} />
-                        <Route path="/signin" element={<SignIn />} />
-                        <Route
-                            path="/reset-password"
-                            element={<ForgotPassword />}
-                        />
                     </Route>
                 </Routes>
                 <Footer />

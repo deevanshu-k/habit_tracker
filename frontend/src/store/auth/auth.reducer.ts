@@ -1,5 +1,5 @@
 import { AuthState } from "../store.type";
-import { AuthActions, SIGNIN, SIGNIN_SUCCESS } from "./auth.action";
+import { AuthActions, SIGNIN, SIGNIN_SUCCESS, SIGNOUT } from "./auth.action";
 
 const initialState: AuthState = {
     user: null,
@@ -16,6 +16,8 @@ export const authReducer = (
             return { ...state, loading: true };
         case SIGNIN_SUCCESS:
             return { ...state, loading: false, user: action.payload };
+        case SIGNOUT:
+            return { ...state, user: null };
         default:
             return state;
     }
