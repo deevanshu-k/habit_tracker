@@ -1,10 +1,11 @@
-import express, { NextFunction, Request, Response } from "express";
-import router from "./routes";
+import cors from "cors";
 import dotenv from "dotenv";
-import bodyParser from "body-parser";
-import { errors } from "celebrate";
+import router from "./routes";
 import pinoHttp from "pino-http";
+import { errors } from "celebrate";
+import bodyParser from "body-parser";
 import logger from "./services/logger.service";
+import express, { NextFunction, Request, Response } from "express";
 
 // Import env variables
 dotenv.config();
@@ -13,6 +14,8 @@ const HOST = String(process.env.HOST);
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use(cors());
 
 app.use(pinoHttp({ logger: logger }));
 
