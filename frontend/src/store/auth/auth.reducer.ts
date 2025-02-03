@@ -2,6 +2,7 @@ import { AuthState } from "../store.type";
 import {
     AuthActions,
     FETCH_USER,
+    FETCH_USER_FAIL,
     FETCH_USER_SUCCESS,
     SIGNIN,
     SIGNIN_FAIL,
@@ -27,10 +28,16 @@ export const authReducer = (
             return { ...state, loading: false };
         case SIGNIN_FAIL:
             return { ...state, loading: false, user: null };
+        case SIGNOUT:
+            return { ...state, loading: true };
         case SIGNOUT_SUCCESS:
-            return { ...state, user: null };
+            return { ...state, loading: false, user: null };
+        case FETCH_USER:
+            return { ...state, loading: true };
         case FETCH_USER_SUCCESS:
-            return { ...state, user: action.payload };
+            return { ...state, loading: false, user: action.payload };
+        case FETCH_USER_FAIL:
+            return { ...state, loading: false, user: null };
         default:
             return state;
     }
