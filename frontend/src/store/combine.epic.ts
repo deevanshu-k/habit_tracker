@@ -1,4 +1,8 @@
 import { combineEpics } from "redux-observable";
-import { signinEpic } from "./auth/auth.epic";
+import { fetchUserDetailEpic, signinEpic, signOutEpic } from "./auth/auth.epic";
 
-export const rootEpic = combineEpics(signinEpic);
+export const rootEpic = combineEpics(
+    signinEpic,
+    fetchUserDetailEpic,
+    signOutEpic
+);

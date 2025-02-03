@@ -42,11 +42,11 @@ function App() {
                                 path="/dashboard"
                                 element={<h1>Dashboard</h1>}
                             />
-                            <Route path="/today" element={<h1>Todays TODO</h1>} />
                             <Route
-                                path="/habits"
-                                element={<h1>Habits</h1>}
+                                path="/today"
+                                element={<h1>Todays TODO</h1>}
                             />
+                            <Route path="/habits" element={<h1>Habits</h1>} />
                         </Route>
                         <Route element={<UnProtectedRoute />}>
                             <Route path="/signup" element={<SignUp />} />
