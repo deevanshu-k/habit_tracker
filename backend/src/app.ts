@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 app.use(
     cors({
-        origin: "http://localhost:5173", // React frontend URL
+        origin: "http://127.0.0.1:5173", // React frontend URL
         credentials: true, // ALLOW COOKIES
     })
 );

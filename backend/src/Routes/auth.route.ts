@@ -3,6 +3,7 @@ import {
     localSignIn,
     localSignUp,
     localSignUpVerifyByOTP,
+    signOut,
 } from "../controllers/auth.controller";
 const router = Router();
 
@@ -19,5 +20,7 @@ router.post("/local/forgot_pswd/check_otp", (req, res) => {});
 router.post("/google/signup", (req, res) => {});
 router.post("/google/signin", (req, res) => {});
 router.post("/google/validate", (req, res) => {});
+
+router.post("/signout", signOut.controller);
 
 export default router;

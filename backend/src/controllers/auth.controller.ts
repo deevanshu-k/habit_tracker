@@ -7,6 +7,7 @@ import { sendMail } from "../services/mail.service";
 import * as jwt from "jsonwebtoken";
 import * as bcrypt from "bcrypt";
 import {
+    LOGOUT_SUCCESS,
     MAIL_SENT_OTP_FOR_SIGNUP,
     OTP_EXPIRED,
     SOMETHING_WENT_WRONG,
@@ -236,5 +237,16 @@ export const localSignIn = {
                 message: SOMETHING_WENT_WRONG,
             });
         }
+    },
+};
+
+export const signOut = {
+    controller: async (req: Request, res: Response) => {
+        res.clearCookie("auth", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+        });
+        res.status(200).json({ code: 200, message: LOGOUT_SUCCESS });
     },
 };
