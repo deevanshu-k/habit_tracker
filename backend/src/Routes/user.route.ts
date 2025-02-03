@@ -1,7 +1,8 @@
 import { Router } from "express";
+import { getUser } from "../controllers/user.controller";
 const router = Router();
 
-router.get("/", (req, res) => {});
+router.get("/", getUser.controller);
 router.patch("/", (req, res) => {});
 router.post("/profileimage", (req, res) => {});
 

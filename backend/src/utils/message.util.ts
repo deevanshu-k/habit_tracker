@@ -12,3 +12,5 @@ export const WRONG_OTP = "Wrong OTP!";
 export const WELCOME = "Welcome to habit tracker!";
 
 export const WRONG_EMAIL_OR_PASSWORD = "Wrong email or password!";
+
+export const UNAUTHORIZED_REQUEST = "Unauthorized!";

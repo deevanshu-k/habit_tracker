@@ -6,6 +6,7 @@ import { errors } from "celebrate";
 import bodyParser from "body-parser";
 import logger from "./services/logger.service";
 import express, { NextFunction, Request, Response } from "express";
+import cookieParser from "cookie-parser";
 
 // Import env variables
 dotenv.config();
@@ -14,8 +15,14 @@ const HOST = String(process.env.HOST);
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cookieParser());
 
-app.use(cors());
+app.use(
+    cors({
+        origin: "http://localhost:5173", // React frontend URL
+        credentials: true, // ALLOW COOKIES
+    })
+);
 
 app.use(pinoHttp({ logger: logger }));
 
