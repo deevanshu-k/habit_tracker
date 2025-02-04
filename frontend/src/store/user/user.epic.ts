@@ -1,15 +1,10 @@
-import {
-    catchError,
-    concat,
-    from,
-    mergeMap,
-    Observable,
-    of,
-} from "rxjs";
+import { catchError, concat, from, mergeMap, Observable, of } from "rxjs";
 import {
     FETCH_USER,
     fetchUserFailAction,
     fetchUserSuccessAction,
+    LOGOUT_USER,
+    logoutUserSuccessAction,
     UserActions,
 } from "./user.action";
 import { ofType } from "redux-observable";
@@ -19,6 +14,25 @@ import {
     globalLoadingEndAction,
     globalLoadingStartAction,
 } from "../global/global.action";
+import authService from "../../api/auth.api";
+
+export const logoutUserEpic = (
+    action$: Observable<any>
+): Observable<UserActions | GlobalActions> =>
+    action$.pipe(
+        ofType(LOGOUT_USER),
+        mergeMap(() =>
+            concat(
+                of(globalLoadingStartAction()),
+                from(authService.signOut()).pipe(
+                    mergeMap(() =>
+                        of(globalLoadingEndAction(), logoutUserSuccessAction())
+                    ),
+                    catchError(() => of(globalLoadingEndAction()))
+                )
+            )
+        )
+    );
 
 export const fetchUserEpic = (
     action$: Observable<any>
@@ -27,7 +41,7 @@ export const fetchUserEpic = (
         ofType(FETCH_USER),
         mergeMap(() =>
             concat(
-                of(globalLoadingStartAction()), // Emit loading start before API call
+                of(globalLoadingStartAction()),
                 from(userService.getUser()).pipe(
                     mergeMap((user) =>
                         of(

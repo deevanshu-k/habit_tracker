@@ -1,8 +1,8 @@
 import { UserState } from "../store.type";
 import {
-    FETCH_USER,
     FETCH_USER_FAIL,
     FETCH_USER_SUCCESS,
+    LOGOUT_USER_SUCCESS,
     UserActions,
 } from "./user.action";
 
@@ -15,8 +15,8 @@ export const userReducer = (
     action: UserActions
 ): UserState => {
     switch (action.type) {
-        case FETCH_USER:
-            return { ...state };
+        case LOGOUT_USER_SUCCESS:
+            return { ...state, data: null };
         case FETCH_USER_SUCCESS:
             return { ...state, data: action.payload.user };
         case FETCH_USER_FAIL:

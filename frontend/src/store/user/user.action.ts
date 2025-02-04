@@ -2,9 +2,25 @@ import { Action } from "redux";
 import { UserDetail } from "../store.type";
 
 // Action types
+export const LOGOUT_USER = "user/logout"
+export const LOGOUT_USER_SUCCESS = "user/logoutSuccess"
 export const FETCH_USER = "user/fetch";
 export const FETCH_USER_SUCCESS = "user/fetchSuccess";
 export const FETCH_USER_FAIL = "user/fetchFail";
+
+// Logout User
+export interface LogoutUserAction extends Action {
+    type: typeof LOGOUT_USER
+}
+export const logoutUserAction = ():LogoutUserAction => ({
+    type: LOGOUT_USER
+})
+export interface LogoutUserSuccessAction extends Action {
+    type: typeof LOGOUT_USER_SUCCESS
+}
+export const logoutUserSuccessAction = ():LogoutUserSuccessAction => ({
+    type: LOGOUT_USER_SUCCESS
+})
 
 // Fetch User Action
 export interface FetchUserAction extends Action {
@@ -43,4 +59,4 @@ export const fetchUserFailAction = (_error: string):FetchUserFailAction => ({
 })
 
 // Actions
-export type UserActions = FetchUserAction | FetchUserSuccessAction | FetchUserFailAction
+export type UserActions = FetchUserAction | FetchUserSuccessAction | FetchUserFailAction | LogoutUserAction | LogoutUserSuccessAction;

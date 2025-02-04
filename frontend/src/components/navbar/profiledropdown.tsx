@@ -1,11 +1,19 @@
 import { Avatar, DropdownMenu } from "@radix-ui/themes";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { useNavigate } from "react-router";
+import {
+    LogoutUserAction,
+    logoutUserAction,
+} from "../../store/user/user.action";
 
 const ProfileDropDown: React.FC = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch<Dispatch<LogoutUserAction>>();
 
     const signOut = () => {
+        dispatch(logoutUserAction());
         navigate("/signin");
     };
 
