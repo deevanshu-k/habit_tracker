@@ -1,11 +1,14 @@
 import { Box, Button, Card, Flex, Text, TextField } from "@radix-ui/themes";
 import React, { useEffect, useState } from "react";
 
-const VerifyOtpCard: React.FC<{ length: number; editSignForm: () => void }> = ({
-    length = 6,
-    editSignForm,
-}) => {
+const VerifyOtpCard: React.FC<{
+    length: number;
+    editSignForm: () => void;
+    email: string;
+    reSendOtp: () => Promise<void>;
+}> = ({ length = 6, editSignForm, email, reSendOtp }) => {
     const [timeLeft, setTimeLeft] = useState(120);
+    const [resendLoading, setResendLoading] = useState<Boolean>(false);
 
     // Countdown timer
     useEffect(() => {
@@ -28,6 +31,14 @@ const VerifyOtpCard: React.FC<{ length: number; editSignForm: () => void }> = ({
         )}`;
     };
 
+    const resend = () => {
+        setResendLoading(true);
+        reSendOtp().then(() => {
+            setResendLoading(false);
+            setTimeLeft(120);
+        });
+    };
+
     return (
         <Card className="min-w-[420px] p-9">
             <Box mb="4">
@@ -41,7 +52,7 @@ const VerifyOtpCard: React.FC<{ length: number; editSignForm: () => void }> = ({
                     placeholder="Your first name"
                     className="tracking-wider"
                     size="3"
-                    value={"abc@example.com"}
+                    value={email}
                 />
             </Box>
             <Box>
@@ -59,11 +70,13 @@ const VerifyOtpCard: React.FC<{ length: number; editSignForm: () => void }> = ({
                 />
             </Box>
             <Flex justify={"end"} py="1" mb="2">
-                {timeLeft == 0 ? (
+                {resendLoading ? (
+                    "Resending"
+                ) : timeLeft == 0 ? (
                     <Text
                         size="2"
                         color="grass"
-                        onClick={() => setTimeLeft(120)}
+                        onClick={resend}
                         className="underline cursor-pointer"
                     >
                         Resend OTP
