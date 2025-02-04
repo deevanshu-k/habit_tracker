@@ -23,8 +23,8 @@ const getSystemTheme = () => {
 
 function App() {
     const [MOD, setThemeMod] = useState<"light" | "dark">(getSystemTheme());
-    const authLoading: boolean = useSelector(
-        (store: StoreState) => store.auth.loading
+    const globalLoading: number = useSelector(
+        (store: StoreState) => store.global.loading
     );
 
     const toggleTheme = () => {
@@ -38,7 +38,7 @@ function App() {
             scaling="90%"
             appearance={MOD}
         >
-            {authLoading && <LoadingScreen />}
+            {globalLoading > 0 && <LoadingScreen />}
             <NavBar mod={MOD} toggleTheme={toggleTheme} />
             <Routes>
                 <Route element={<Page />}>

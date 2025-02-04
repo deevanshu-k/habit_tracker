@@ -13,7 +13,7 @@ type PropType = {
 
 const NavBar: React.FC<PropType> = ({ mod, toggleTheme }) => {
     const navigate = useNavigate();
-    const user = useSelector((state: StoreState) => state.auth.user);
+    const user = useSelector((state: StoreState) => state.user.data);
 
     return (
         <nav

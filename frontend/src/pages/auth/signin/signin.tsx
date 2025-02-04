@@ -5,16 +5,21 @@ import {
     Flex,
     Heading,
     Separator,
+    Spinner,
     Text,
     TextField,
 } from "@radix-ui/themes";
-import React from "react";
+import React, { useState } from "react";
 import GoogleIcon from "../../../components/custom-icons/googleicon";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
-import { signin, SigninAction } from "../../../store/auth/auth.action";
-import { Dispatch } from "redux";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { Dispatch } from "redux";
+import { useDispatch } from "react-redux";
+import authService from "../../../api/auth.api";
+import {
+    fetchUserAction,
+    FetchUserAction,
+} from "../../../store/user/user.action";
 
 type Inputs = {
     email: string;
@@ -23,15 +28,29 @@ type Inputs = {
 
 const SignIn: React.FC = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch<Dispatch<SigninAction>>();
-
+    const [signingIn, setSigningIn] = useState<boolean>(false);
+    const dispatch = useDispatch<Dispatch<FetchUserAction>>();
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<Inputs>();
+
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        dispatch(signin(data.email, data.password));
+        // Signing
+        setSigningIn(true);
+        // Calling Signin API
+        authService
+            .signin(data.email, data.password)
+            .then((res) => {
+                alert(res.data.message);
+                dispatch(fetchUserAction());
+                setSigningIn(false);
+            })
+            .catch((e) => {
+                alert(e.response.data.message);
+                setSigningIn(false);
+            });
     };
 
     return (
@@ -157,13 +176,14 @@ const SignIn: React.FC = () => {
                         </Text>
                     </Box>
                     <Button
+                        disabled={signingIn}
                         radius="none"
                         className="flex h-[40px] w-[100%] pl-4 cursor-pointer"
                         size="3"
                         mt="5"
                         type="submit"
                     >
-                        Sign in
+                        {signingIn ? <Spinner /> : "Sign in"}
                     </Button>
                     <Box mt="5" className="flex align-middle justify-center">
                         <Text as="span" align="center" className="opacity-40">

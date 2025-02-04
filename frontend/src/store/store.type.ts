@@ -6,12 +6,15 @@ export interface UserDetail {
     mode: string;
 }
 
-export interface AuthState {
-    user: null | UserDetail;
-    error: null | string;
-    loading: boolean;
+export interface GlobalState {
+    loading: number;
+}
+
+export interface UserState {
+    data: UserDetail | null;
 }
 
 export interface StoreState {
-    auth: AuthState;
+    user: UserState;
+    global: GlobalState;
 }
