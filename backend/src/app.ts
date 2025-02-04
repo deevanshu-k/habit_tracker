@@ -7,19 +7,27 @@ import bodyParser from "body-parser";
 import logger from "./services/logger.service";
 import express, { NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
+import delayMiddleware from "./middleware/delay.middleware";
 
 // Import env variables
 dotenv.config();
 const PORT = Number(process.env.PORT);
 const HOST = String(process.env.HOST);
+const DELAY = Number(process.env.DELAY);
+const CLIENT_BASE_URL = String(process.env.CLIENT_BASE_URL);
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+// Delay
+if (DELAY > 100) {
+    app.use(delayMiddleware(DELAY));
+}
+
 app.use(
     cors({
-        origin: "http://127.0.0.1:5173", // React frontend URL
+        origin: CLIENT_BASE_URL, // React frontend URL
         credentials: true, // ALLOW COOKIES
     })
 );

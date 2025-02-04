@@ -7,5 +7,7 @@ declare namespace NodeJS {
         MAIL_USER: string;
         MAIL_PASS: string;
         JWT_SECRET: string;
+        DELAY: number; // Delay in request in ms
+        CLIENT_BASE_URL: string;
     }
 }
