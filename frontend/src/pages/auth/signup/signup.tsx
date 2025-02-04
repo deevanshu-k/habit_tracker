@@ -1,8 +1,9 @@
-import { Box, Flex, Heading, Text } from "@radix-ui/themes";
 import React, { useState } from "react";
-import VerifyOtpCard from "./verifyotpcard/verifyotpcard";
-import SignUpCard from "./signupcard/signupcard";
+import { useNavigate } from "react-router";
 import authService from "../../../api/auth.api";
+import SignUpCard from "./signupcard/signupcard";
+import { Box, Flex, Heading, Text } from "@radix-ui/themes";
+import VerifyOtpCard from "./verifyotpcard/verifyotpcard";
 
 export interface User {
     first_name: string;
@@ -12,9 +13,17 @@ export interface User {
 }
 
 const SignUp: React.FC = () => {
+    const navigate = useNavigate();
     const [verify, setVerifyOtp] = useState<boolean>(false);
-    const [user, setUser] = useState<User | null>(null);
     const [signingUp, setSigningUp] = useState<boolean>(false);
+    const [verifyingOtp, setVerifyingOtp] = useState<boolean>(false);
+    const [reSendingOtp, setReSendingOtp] = useState<boolean>(false);
+    const [user, setUser] = useState<User | null>({
+        email: "astroboiscosmos@gmail.com",
+        first_name: "",
+        last_name: "",
+        password: "",
+    });
 
     const signUpUser = (data: User) => {
         // Get data in parent
@@ -24,8 +33,9 @@ const SignUp: React.FC = () => {
         // Call register api
         authService
             .signup(data.first_name, data.last_name, data.email, data.password)
-            .then(() => {
+            .then((res) => {
                 setVerifyOtp(true);
+                alert(res.data.message);
                 setSigningUp(false);
             })
             .catch((e) => {
@@ -33,14 +43,37 @@ const SignUp: React.FC = () => {
                 setSigningUp(false);
             });
     };
-    const resendOtp = async () => {
-        if (!user) return setVerifyOtp(false);
-        authService.signup(
-            user.first_name,
-            user.last_name,
-            user.email,
-            user.password
-        );
+    const verifyOtp = (email: string, otp: string) => {
+        // Verifying
+        setVerifyingOtp(true);
+        // Call verifying api
+        authService
+            .signupVerifyOtp(email, otp)
+            .then((res) => {
+                setVerifyingOtp(false);
+                alert(res.data.message);
+                navigate("/signin");
+            })
+            .catch((e) => {
+                alert(e.response.data.message);
+                setVerifyingOtp(false);
+            });
+    };
+    const resendOtp = () => {
+        if (!user) return;
+        // Resending
+        setReSendingOtp(true);
+        // Call resend api
+        authService
+            .signup(user.first_name, user.last_name, user.email, user.password)
+            .then((res) => {
+                setReSendingOtp(false);
+                alert(res.data.message);
+            })
+            .catch((e) => {
+                alert(e.response.data.message);
+                setReSendingOtp(false);
+            });
     };
 
     return (
@@ -74,7 +107,10 @@ const SignUp: React.FC = () => {
                     editSignForm={() => setVerifyOtp(false)}
                     email={user.email}
                     length={6}
+                    verify={verifyOtp}
+                    loading={verifyingOtp}
                     reSendOtp={resendOtp}
+                    resending={reSendingOtp}
                 />
             ) : (
                 <SignUpCard signUpUser={signUpUser} loading={signingUp} />

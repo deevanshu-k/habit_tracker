@@ -13,6 +13,8 @@ const authService = {
             email,
             password,
         }),
+    signupVerifyOtp: (email: string, otp: string) =>
+        axiosInstance.post("/api/auth/local/signup/verify", { email, otp }),
     signin: (email: string, password: string) =>
         axiosInstance.post("/api/auth/local/signin", { email, password }),
     signOut: () => axiosInstance.post("/api/auth/signout"),
