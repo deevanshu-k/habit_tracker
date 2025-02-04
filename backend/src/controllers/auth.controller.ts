@@ -73,7 +73,7 @@ export const localSignUp = {
 
             res.status(200).json({
                 code: 200,
-                messsage: MAIL_SENT_OTP_FOR_SIGNUP,
+                message: MAIL_SENT_OTP_FOR_SIGNUP,
             });
         } catch (error) {
             res.json({
@@ -88,7 +88,7 @@ export const localSignUpVerifyByOTP = {
     validator: celebrate({
         body: Joi.object({
             email: Joi.string().email().required(),
-            otp: Joi.string().length(6).pattern(/^\d+$/).required(),
+            otp: Joi.string().length(6).required(),
         }),
     }),
     controller: async (req: Request, res: Response) => {
