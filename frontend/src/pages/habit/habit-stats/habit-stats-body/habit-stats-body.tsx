@@ -6,6 +6,7 @@ import {
     MONTH,
 } from "../../../../utils/date.utils";
 import { CheckIcon } from "@radix-ui/react-icons";
+import AddHabit from "../../../../components/add-habbit/add-habit";
 
 const HabitStatsBody: React.FC<{
     month: MONTH;
@@ -35,13 +36,17 @@ const HabitStatsBody: React.FC<{
                         </Text>
                     </Box>
                 ))}
-                <Button
-                    variant="outline"
-                    radius="none"
-                    className="mt-2 w-full cursor-pointer"
-                >
-                    New Habit
-                </Button>
+                <AddHabit
+                    children={
+                        <Button
+                            variant="outline"
+                            radius="none"
+                            className="mt-2 w-full cursor-pointer"
+                        >
+                            New Habit
+                        </Button>
+                    }
+                />
             </Box>
 
             <Box>
