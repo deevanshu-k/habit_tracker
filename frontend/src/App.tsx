@@ -14,6 +14,7 @@ import ProtectedRoute from "./components/protectedroute/protectedroute";
 import UnProtectedRoute from "./components/unprotectedroute/unprotectedroute";
 import LoadingScreen from "./components/loading-screen/loadingscreen";
 import { StoreState } from "./store/store.type";
+import Habit from "./pages/habit/habit";
 
 const getSystemTheme = () => {
     return window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -45,7 +46,7 @@ function App() {
                     <Route element={<ProtectedRoute />}>
                         <Route path="/dashboard" element={<h1>Dashboard</h1>} />
                         <Route path="/today" element={<h1>Todays TODO</h1>} />
-                        <Route path="/habits" element={<h1>Habits</h1>} />
+                        <Route path="/habits" element={<Habit />} />
                     </Route>
                     <Route element={<UnProtectedRoute />}>
                         <Route path="/signup" element={<SignUp />} />
