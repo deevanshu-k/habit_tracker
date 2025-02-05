@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import SelectMonth, { MONTH } from "./select-month/select-month";
+import SelectMonth from "./select-month/select-month";
+import HabitStatsBody from "./habit-stats-body/habit-stats-body";
+import { MONTH } from "../../../utils/date.utils";
 
 const HabitStats: React.FC = () => {
     const now = new Date();
@@ -25,7 +27,7 @@ const HabitStats: React.FC = () => {
 
     return (
         <div>
-            <div className="flex justify-center">
+            <div className="flex justify-center pb-4">
                 <SelectMonth
                     goToPrevMonth={prevMonth}
                     goToNextMonth={nextMonth}
@@ -33,8 +35,10 @@ const HabitStats: React.FC = () => {
                     year={year}
                 />
             </div>
-            <div>Stats Body</div>
-            <div>New Habit</div>
+            <div>
+                <HabitStatsBody month={month} year={year} />
+            </div>
+           
         </div>
     );
 };
