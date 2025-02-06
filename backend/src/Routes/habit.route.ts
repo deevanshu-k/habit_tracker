@@ -1,11 +1,19 @@
 import { Router } from "express";
+import {
+    createHabit,
+    deleteHabit,
+    getHabits,
+    getTodayHabits,
+    updateHabit,
+    updateHabitLog,
+} from "../controllers/habit.controller";
 const router = Router();
 
-router.get("/", (req, res) => {});
-router.post("/", (req, res) => {});
-router.patch("/:id", (req, res) => {});
-router.delete("/:id", (req, res) => {});
-router.get("/:id/logs", (req, res) => {}); // ?month={}&year={}
-router.get("/today", (req, res) => {});
+router.post("/", createHabit.validator, createHabit.controller);
+router.get("/", getHabits.validator, getHabits.controller);
+router.get("/today", getTodayHabits.validator, getTodayHabits.controller);
+router.put("/:id", updateHabit.validator, updateHabit.controller);
+router.delete("/:id", deleteHabit.validator, deleteHabit.controller);
+router.put("/:id/log", updateHabitLog.validator, updateHabitLog.controller); // ?month={}&year={}
 
 export default router;

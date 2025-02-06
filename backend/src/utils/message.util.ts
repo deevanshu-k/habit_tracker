@@ -16,3 +16,7 @@ export const WRONG_EMAIL_OR_PASSWORD = "Wrong email or password!";
 export const UNAUTHORIZED_REQUEST = "Unauthorized!";
 
 export const LOGOUT_SUCCESS = "Logged out successfully";
+
+export const NOT_FOUND = "Not found!";
+
+export const SUCCESS = "Success!"
