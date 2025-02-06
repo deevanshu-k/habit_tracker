@@ -5,7 +5,7 @@ import { Container, Flex } from "@radix-ui/themes";
 
 const Habit: React.FC = () => {
     return (
-        <div className="px-5 py-9">
+        <div className="px-10 py-20">
             <Flex direction={"column"} gap={"9"}>
                 <HabitStats />
                 <Container size={"2"} mt={"6"}>

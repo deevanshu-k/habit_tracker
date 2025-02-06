@@ -1,4 +1,9 @@
 import { combineEpics } from "redux-observable";
 import { fetchUserEpic, logoutUserEpic } from "./user/user.epic";
+import { getHabitsEpic } from "./habit/habit.epic";
 
-export const rootEpic = combineEpics(logoutUserEpic, fetchUserEpic);
+export const rootEpic = combineEpics<any>(
+    logoutUserEpic,
+    fetchUserEpic,
+    getHabitsEpic
+);

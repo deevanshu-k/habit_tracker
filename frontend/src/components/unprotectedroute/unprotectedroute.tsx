@@ -6,7 +6,7 @@ import { Navigate, Outlet } from "react-router";
 const UnProtectedRoute: React.FC = () => {
     const user = useSelector((state: StoreState) => state.user.data);
 
-    return user ? <Navigate to="/" /> : <Outlet />;
+    return user ? <Navigate to="/habits" /> : <Outlet />;
 };
 
 export default UnProtectedRoute;
