@@ -7,12 +7,16 @@ import {
 } from "../../../../utils/date.utils";
 import { CheckIcon } from "@radix-ui/react-icons";
 import AddHabit from "../../../../components/add-habbit/add-habit";
+import { useSelector } from "react-redux";
+import { Habit, StoreState } from "../../../../store/store.type";
 
 const HabitStatsBody: React.FC<{
     month: MONTH;
     year: number;
     habbits?: number;
 }> = ({ month, year, habbits = 5 }) => {
+    const habits = useSelector<StoreState, Habit[]>((s) => s.habit.data);
+
     return (
         <Flex direction={"row"}>
             <Box width={"230px"}>
@@ -24,7 +28,7 @@ const HabitStatsBody: React.FC<{
                         Habits
                     </Text>
                 </Box>
-                {Array.from({ length: habbits }).map((_, i) => (
+                {habits.map((habit, i) => (
                     <Box
                         height={"40px"}
                         className={`flex items-center border-b border-l ${
@@ -32,7 +36,7 @@ const HabitStatsBody: React.FC<{
                         }`}
                     >
                         <Text className="px-4" size={"2"}>
-                            Habbit 1
+                            {habit.title}
                         </Text>
                     </Box>
                 ))}
@@ -84,7 +88,7 @@ const HabitStatsBody: React.FC<{
                         </>
                     ))}
                 </Box>
-                {Array.from({ length: habbits }).map(() => (
+                {habits.map((habit) => (
                     <Box height={"40px"} className="flex items-center">
                         {Array.from({ length: 31 }, (_, i) => (
                             <>
@@ -93,7 +97,7 @@ const HabitStatsBody: React.FC<{
                                         i == 0 ? "border-l" : ""
                                     }`}
                                 >
-                                    <CheckIcon />
+                                    {habit.logs[i].is_done ? <CheckIcon /> : ""}
                                 </div>
                             </>
                         ))}
@@ -117,7 +121,7 @@ const HabitStatsBody: React.FC<{
                         </Text>
                     </Box>
                 </Box>
-                {Array.from({ length: habbits }).map(() => (
+                {habits.map((habit) => (
                     <Box height={"40px"} className="flex flex-row border-b">
                         <Box className="w-[50%] flex items-center justify-center h-full border-r">
                             <Text align={"center"} size={"2"}>
@@ -126,7 +130,10 @@ const HabitStatsBody: React.FC<{
                         </Box>
                         <Box className="w-[50%] flex items-center justify-center h-full border-r">
                             <Text align={"center"} size={"2"}>
-                                20
+                                {habit.logs.reduce(
+                                    (p, c) => p + (c.is_done ? 1 : 0),
+                                    0
+                                )}
                             </Text>
                         </Box>
                     </Box>
