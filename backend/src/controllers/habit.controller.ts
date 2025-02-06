@@ -104,9 +104,57 @@ export const getTodayHabits = {
 };
 export const getHabits = {
     validator: celebrate({
-        body: {},
+        query: Joi.object({
+            month: Joi.number().min(1).max(12).required(),
+            year: Joi.number().min(2000).max(4000).required(),
+        }),
     }),
-    controller: async (req: Request, res: Response) => {},
+    controller: async (req: AuthenticatedRequest, res: Response) => {
+        try {
+            if (!req.user) {
+                res.json({
+                    code: 401,
+                    message: UNAUTHORIZED_REQUEST,
+                });
+                return;
+            }
+
+            const { month, year } = req.query;
+            const habits = await db.habit.findMany({
+                where: {
+                    is_archived: false,
+                    is_deleted: false,
+                },
+                include: {
+                    logs: {
+                        where: {
+                            month: Number(month),
+                            year: Number(year),
+                        },
+                        omit: {
+                            habitId: true,
+                            month: true,
+                            year: true,
+                        },
+                    },
+                },
+                omit: {
+                    userId: true,
+                },
+            });
+
+            res.status(200).json({
+                code: 200,
+                message: SUCCESS,
+                data: habits,
+            });
+        } catch (error) {
+            res.status(500).json({
+                code: 500,
+                message: SOMETHING_WENT_WRONG,
+            });
+        }
+    },
 };
 export const updateHabit = {
     validator: celebrate({
