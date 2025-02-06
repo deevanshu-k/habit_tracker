@@ -133,11 +133,57 @@ export const updateHabitLog = {
             note: Joi.string().allow("").required(),
         }),
     }),
-    controller: async (req: Request, res: Response) => {
+    controller: async (req: AuthenticatedRequest, res: Response) => {
         try {
-            
+            if (!req.user) {
+                res.json({
+                    code: 401,
+                    message: UNAUTHORIZED_REQUEST,
+                });
+                return;
+            }
+
+            // Update or create habit log
+            const { id } = req.params;
+            const { date, month, year, is_done, note } = req.body;
+            const log = await db.habitLog.upsert({
+                create: {
+                    date,
+                    month,
+                    year,
+                    habitId: id,
+                    is_done,
+                    note,
+                },
+                update: {
+                    is_done,
+                    note,
+                },
+                select: {
+                    id: true,
+                    is_done: true,
+                    note: true,
+                },
+                where: {
+                    habitId_date_month_year: {
+                        habitId: String(id),
+                        date: Number(date),
+                        month: Number(month),
+                        year: Number(year),
+                    },
+                },
+            });
+
+            res.status(200).json({
+                code: 200,
+                message: SUCCESS,
+                data: log,
+            });
         } catch (error) {
-            
+            res.status(500).json({
+                code: 500,
+                message: SOMETHING_WENT_WRONG,
+            });
         }
     },
 };
