@@ -49,6 +49,8 @@ model HabitLog {
   note    String  @default("")
   Habit   Habit   @relation(fields: [habitId], references: [id])
   habitId String  @db.ObjectId
+
+  @@unique([habitId, date, month, year])
 }
 
 model Todo {
