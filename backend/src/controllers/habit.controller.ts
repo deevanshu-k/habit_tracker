@@ -210,9 +210,22 @@ export const updateHabitLog = {
                 return;
             }
 
-            // Update or create habit log
             const { id } = req.params;
             const { date, month, year, is_done, note } = req.body;
+
+            // Habit ownership check
+            const habit = await db.habit.findFirst({
+                where: { id, userId: req.user.id },
+            });
+            if (!habit) {
+                res.json({
+                    code: 401,
+                    message: UNAUTHORIZED_REQUEST,
+                });
+                return;
+            }
+
+            // Update or create habit log
             const log = await db.habitLog.upsert({
                 create: {
                     date,
