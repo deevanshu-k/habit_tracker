@@ -7,9 +7,9 @@ export interface UserDetail {
 }
 
 export enum HabitFreqType {
-    FIXED_DAYS,
-    NO_OF_DAYS_IN_WEEKS,
-    NO_OF_DAYS_IN_MONTHS,
+    FIXED_DAYS = "FIXED_DAYS",
+    NO_OF_DAYS_IN_WEEKS = "NO_OF_DAYS_IN_WEEKS",
+    NO_OF_DAYS_IN_MONTHS = "NO_OF_DAYS_IN_MONTHS",
 }
 
 export interface HabitLog {

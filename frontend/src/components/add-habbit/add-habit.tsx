@@ -1,48 +1,96 @@
-import { Button, Dialog, Flex, Text, TextField } from "@radix-ui/themes";
+import {
+    Button,
+    Dialog,
+    Flex,
+    Select,
+    Text,
+    TextArea,
+    TextField,
+} from "@radix-ui/themes";
 import React from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { addHabitAction, AddHabitAction } from "../../store/habit/habit.action";
 
 const AddHabit: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const { register, setValue, handleSubmit } = useForm<{
+        title: string;
+        description: string;
+        color: string;
+    }>({ defaultValues: { color: "Green" } });
+    const dispatch = useDispatch<Dispatch<AddHabitAction>>();
+
+    const onAddSumbmit = (data: {
+        title: string;
+        description: string;
+        color: string;
+    }) => {
+        dispatch(addHabitAction(data.title, data.description, data.color));
+    };
+
     return (
         <Dialog.Root>
             <Dialog.Trigger>{children}</Dialog.Trigger>
-
             <Dialog.Content maxWidth="450px">
-                <Dialog.Title>Edit profile</Dialog.Title>
-                <Dialog.Description size="2" mb="4">
-                    Make changes to your profile.
-                </Dialog.Description>
+                <Dialog.Title align={"center"}>Add Habit</Dialog.Title>
 
-                <Flex direction="column" gap="3">
-                    <label>
-                        <Text as="div" size="2" mb="1" weight="bold">
-                            Name
-                        </Text>
-                        <TextField.Root
-                            defaultValue="Freja Johnsen"
-                            placeholder="Enter your full name"
-                        />
-                    </label>
-                    <label>
-                        <Text as="div" size="2" mb="1" weight="bold">
-                            Email
-                        </Text>
-                        <TextField.Root
-                            defaultValue="freja@example.com"
-                            placeholder="Enter your email"
-                        />
-                    </label>
-                </Flex>
-
-                <Flex gap="3" mt="4" justify="end">
-                    <Dialog.Close>
-                        <Button variant="soft" color="gray">
-                            Cancel
-                        </Button>
-                    </Dialog.Close>
-                    <Dialog.Close>
-                        <Button>Save</Button>
-                    </Dialog.Close>
-                </Flex>
+                <form onSubmit={handleSubmit(onAddSumbmit)}>
+                    <Flex direction="column" gap="3">
+                        <label>
+                            <Text as="div" size="2" mb="1" weight="bold">
+                                Title
+                            </Text>
+                            <TextField.Root
+                                {...register("title", {
+                                    required: "Title is required",
+                                    minLength: 1,
+                                })}
+                            />
+                        </label>
+                        <label>
+                            <Text as="div" size="2" mb="1" weight="bold">
+                                Description
+                            </Text>
+                            <TextArea {...register("description")} />
+                        </label>
+                        <label className="flex flex-row gap-2">
+                            <Text as="div" size="2" mb="1" weight="bold">
+                                Color
+                            </Text>
+                            <Select.Root
+                                size="1"
+                                defaultValue="Green"
+                                onValueChange={(value) =>
+                                    setValue("color", value)
+                                }
+                            >
+                                <Select.Trigger />
+                                <Select.Content>
+                                    {[
+                                        "Gray",
+                                        "Red",
+                                        "Green",
+                                        "Pink",
+                                        "Sky",
+                                    ].map((c) => (
+                                        <Select.Item value={c}>{c}</Select.Item>
+                                    ))}
+                                </Select.Content>
+                            </Select.Root>
+                        </label>
+                    </Flex>
+                    <Flex gap="3" mt="4" justify="end">
+                        <Dialog.Close>
+                            <Button variant="soft" color="gray">
+                                Cancel
+                            </Button>
+                        </Dialog.Close>
+                        <Dialog.Close>
+                            <Button type="submit">Save</Button>
+                        </Dialog.Close>
+                    </Flex>
+                </form>
             </Dialog.Content>
         </Dialog.Root>
     );

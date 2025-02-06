@@ -13,8 +13,7 @@ import { Habit, StoreState } from "../../../../store/store.type";
 const HabitStatsBody: React.FC<{
     month: MONTH;
     year: number;
-    habbits?: number;
-}> = ({ month, year, habbits = 5 }) => {
+}> = ({ month, year }) => {
     const habits = useSelector<StoreState, Habit[]>((s) => s.habit.data);
 
     return (
@@ -93,7 +92,11 @@ const HabitStatsBody: React.FC<{
                         {Array.from({ length: 31 }, (_, i) => (
                             <>
                                 <div
-                                    className={`h-full hover:bg-green-500 flex items-center justify-center border-r w-[30px] border-b ${
+                                    className={`h-full ${
+                                        habit.logs[i].is_done
+                                            ? `bg-${habit.color.toLowerCase()}-500`
+                                            : ""
+                                    } hover:bg-green-500 flex items-center justify-center border-r w-[30px] border-b ${
                                         i == 0 ? "border-l" : ""
                                     }`}
                                 >
