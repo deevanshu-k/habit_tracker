@@ -8,7 +8,7 @@ import {
     UNAUTHORIZED_REQUEST,
 } from "../utils/message.util";
 import db from "../services/db.service";
-import { Color, FrequencyType } from "@prisma/client";
+import { Color, FrequencyType, HabitLog } from "@prisma/client";
 
 export const createHabit = {
     validator: celebrate({
@@ -142,11 +142,30 @@ export const getHabits = {
                     userId: true,
                 },
             });
+            const habitsData = habits.map((h) => {
+                const logArr: {
+                    id: string;
+                    date: number;
+                    is_done: boolean;
+                    note: string;
+                }[] = Array.from({ length: 31 }, (v, k) => ({
+                    id: "",
+                    date: k + 1,
+                    is_done: false,
+                    note: "",
+                }));
+
+                h.logs.forEach((l) => {
+                    logArr[l.date - 1] = l;
+                });
+
+                return { ...h, logs: logArr };
+            });
 
             res.status(200).json({
                 code: 200,
                 message: SUCCESS,
-                data: habits,
+                data: habitsData,
             });
         } catch (error) {
             res.status(500).json({
