@@ -7,14 +7,33 @@ import {
 } from "../../../../utils/date.utils";
 import { CheckIcon } from "@radix-ui/react-icons";
 import AddHabit from "../../../../components/add-habbit/add-habit";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Habit, StoreState } from "../../../../store/store.type";
+import { Dispatch } from "redux";
+import {
+    updateHabitLogAction,
+    UpdateHabitLogAction,
+} from "../../../../store/habit/habit.action";
 
 const HabitStatsBody: React.FC<{
     month: MONTH;
     year: number;
 }> = ({ month, year }) => {
     const habits = useSelector<StoreState, Habit[]>((s) => s.habit.data);
+    const dispatch = useDispatch<Dispatch<UpdateHabitLogAction>>();
+
+    const updateHabitLog = (
+        habit_id: string,
+        date: number,
+        month: number,
+        year: number,
+        is_done: boolean,
+        note: string
+    ) => {
+        dispatch(
+            updateHabitLogAction(habit_id, date, month, year, is_done, note)
+        );
+    };
 
     return (
         <Flex direction={"row"}>
@@ -92,13 +111,25 @@ const HabitStatsBody: React.FC<{
                         {Array.from({ length: 31 }, (_, i) => (
                             <>
                                 <div
-                                    className={`h-full ${
+                                    className={`h-full cursor-pointer ${
                                         habit.logs[i].is_done
                                             ? `bg-${habit.color.toLowerCase()}-500`
                                             : ""
                                     } hover:bg-green-500 flex items-center justify-center border-r w-[30px] border-b ${
                                         i == 0 ? "border-l" : ""
                                     }`}
+                                    onClick={() =>
+                                        getDaysInMonth(year, month) >= i + 1
+                                            ? updateHabitLog(
+                                                  habit.id,
+                                                  habit.logs[i].date,
+                                                  month,
+                                                  year,
+                                                  !habit.logs[i].is_done,
+                                                  habit.logs[i].note
+                                              )
+                                            : ""
+                                    }
                                 >
                                     {habit.logs[i].is_done ? <CheckIcon /> : ""}
                                 </div>

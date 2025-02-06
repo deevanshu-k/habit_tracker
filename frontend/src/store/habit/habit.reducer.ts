@@ -1,10 +1,10 @@
-import { Habit, HabitFreqType, HabitState } from "../store.type";
+import { Habit, HabitState } from "../store.type";
 import {
-    ADD_HABIT,
     ADD_HABIT_SUCCESS,
     FETCH_HABIT_FAIL,
     FETCH_HABIT_SUCCESS,
     HabitActions,
+    UPDATE_HABITLOG_SUCCESS,
 } from "./habit.action";
 
 const initialState: HabitState = {
@@ -38,6 +38,26 @@ export const habitReducer = (
                 })),
             };
             return { ...state, data: [...state.data, newHabit] };
+        case UPDATE_HABITLOG_SUCCESS:
+            let habits = state.data.map((h) => {
+                if (h.id === action.payload.habit_id) {
+                    return {
+                        ...h,
+                        logs: h.logs.map((l) => {
+                            if (l.date === action.payload.date) {
+                                return {
+                                    ...l,
+                                    is_done: action.payload.is_done,
+                                    note: action.payload.note,
+                                };
+                            }
+                            return l;
+                        }),
+                    };
+                }
+                return h;
+            });
+            return { ...state, data: habits };
         default:
             return { ...state };
     }

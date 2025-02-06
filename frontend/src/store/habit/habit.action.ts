@@ -9,6 +9,9 @@ export const FETCH_HABIT_FAIL = "habit/fetchFail";
 export const ADD_HABIT = "habit/add";
 export const ADD_HABIT_SUCCESS = "habit/addSuccess";
 export const ADD_HABIT_FAIL = "habit/addFail";
+export const UPDATE_HABITLOG = "habit/log/update";
+export const UPDATE_HABITLOG_SUCCESS = "habit/log/updateSuccess";
+export const UPDATE_HABITLOG_FAIL = "habit/log/updateFail";
 
 // Fetch Habit Action
 export interface FetchHabitAction extends Action {
@@ -107,6 +110,77 @@ export const addHabitFailAction = (_error: string): AddHabitFailAction => ({
     },
 });
 
+// Update Habit Log Action
+export interface UpdateHabitLogAction extends Action {
+    type: typeof UPDATE_HABITLOG;
+    payload: {
+        habit_id: string;
+        date: number;
+        month: number;
+        year: number;
+        is_done: boolean;
+        note: string;
+    };
+}
+export const updateHabitLogAction = (
+    _habit_id: string,
+    _date: number,
+    _month: number,
+    _year: number,
+    _is_done: boolean,
+    _note: string
+): UpdateHabitLogAction => ({
+    type: UPDATE_HABITLOG,
+    payload: {
+        habit_id: _habit_id,
+        date: _date,
+        month: _month,
+        year: _year,
+        is_done: _is_done,
+        note: _note,
+    },
+});
+
+// Update Habit Log Success Action
+export interface UpdateHabitLogSuccessAction extends Action {
+    type: typeof UPDATE_HABITLOG_SUCCESS;
+    payload: {
+        habit_id: string;
+        date: number;
+        month: number;
+        year: number;
+        is_done: boolean;
+        note: string;
+    };
+}
+export const updateHabitLogSuccessAction = (_log: {
+    habit_id: string;
+    date: number;
+    month: number;
+    year: number;
+    is_done: boolean;
+    note: string;
+}): UpdateHabitLogSuccessAction => ({
+    type: UPDATE_HABITLOG_SUCCESS,
+    payload: _log,
+});
+
+// Update Habit Log Fail Action
+export interface UpdateHabitLogFailAction extends Action {
+    type: typeof UPDATE_HABITLOG_FAIL;
+    payload: {
+        error: string;
+    };
+}
+export const updateHabitLogFailAction = (
+    _error: string
+): UpdateHabitLogFailAction => ({
+    type: UPDATE_HABITLOG_FAIL,
+    payload: {
+        error: _error,
+    },
+});
+
 // Actions
 export type HabitActions =
     | FetchHabitAction
@@ -114,4 +188,7 @@ export type HabitActions =
     | FetchHabitFailAction
     | AddHabitAction
     | AddHabitSuccessAction
-    | AddHabitFailAction;
+    | AddHabitFailAction
+    | UpdateHabitLogAction
+    | UpdateHabitLogSuccessAction
+    | UpdateHabitLogFailAction;

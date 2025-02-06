@@ -20,6 +20,9 @@ import {
     fetchHabitFailAction,
     fetchHabitSuccessAction,
     HabitActions,
+    UPDATE_HABITLOG,
+    updateHabitLogFailAction,
+    updateHabitLogSuccessAction,
 } from "./habit.action";
 import { ofType } from "redux-observable";
 import habitService from "../../api/habit.api";
@@ -83,6 +86,48 @@ export const addHabitEpic = (
                         of(
                             globalLoadingEndAction(),
                             addHabitFailAction(e.response.data.message)
+                        )
+                    )
+                )
+            )
+        )
+    );
+
+export const updateHabitLogEpic = (
+    action$: Observable<any>
+): Observable<GlobalActions | HabitActions> =>
+    action$.pipe(
+        ofType(UPDATE_HABITLOG),
+        switchMap((action) =>
+            concat(
+                of(globalLoadingStartAction()),
+                from(
+                    habitService.updateHabitLog(
+                        action.payload.habit_id,
+                        action.payload.date,
+                        action.payload.month,
+                        action.payload.year,
+                        action.payload.is_done,
+                        action.payload.note
+                    )
+                ).pipe(
+                    mergeMap((data) =>
+                        of(
+                            globalLoadingEndAction(),
+                            updateHabitLogSuccessAction({
+                                habit_id: action.payload.habit_id,
+                                date: action.payload.date,
+                                month: action.payload.month,
+                                year: action.payload.year,
+                                is_done: data.is_done,
+                                note: data.note,
+                            })
+                        )
+                    ),
+                    catchError((e) =>
+                        of(
+                            globalLoadingEndAction(),
+                            updateHabitLogFailAction(e.response.data.message)
                         )
                     )
                 )

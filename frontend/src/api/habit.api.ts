@@ -10,6 +10,12 @@ export interface AddHabitResponse {
     color: string;
 }
 
+export interface UpdateHabitLogResponse {
+    id: string;
+    is_done: boolean;
+    note: string;
+}
+
 const habitService = {
     getHabits: async (month: number, year: number): Promise<Habit[]> => {
         const res = await axiosInstance.get(
@@ -30,6 +36,23 @@ const habitService = {
             f_type,
             f: String(f),
             color,
+        });
+        return res.data.data;
+    },
+    updateHabitLog: async (
+        id: string,
+        date: number,
+        month: number,
+        year: number,
+        is_done: boolean,
+        note: string
+    ): Promise<UpdateHabitLogResponse> => {
+        const res = await axiosInstance.put(`/api/habit/${id}/log`, {
+            date,
+            month,
+            year,
+            is_done,
+            note,
         });
         return res.data.data;
     },
