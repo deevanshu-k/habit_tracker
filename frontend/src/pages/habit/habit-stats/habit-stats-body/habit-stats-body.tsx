@@ -37,26 +37,33 @@ const HabitStatsBody: React.FC<{
 
     return (
         <Flex direction={"row"}>
-            <Box width={"230px"}>
+            <Box width={"200px"}>
                 <Box
                     height={"60px"}
                     className="flex items-center justify-center"
                 >
-                    <Text size={"3"} color="grass">
+                    <Text size={"3"} className="text-[var(--accent-10)]">
                         Habits
                     </Text>
                 </Box>
                 {habits.map((habit, i) => (
-                    <Box
+                    <Flex
+                        justify="between"
                         height={"40px"}
-                        className={`flex items-center border-b border-l ${
+                        className={`flex items-center px-3 border-b border-l ${
                             i == 0 ? "border-t" : ""
                         }`}
                     >
-                        <Text className="px-4" size={"2"}>
+                        <Text size={"2"}>
                             {habit.title}
                         </Text>
-                    </Box>
+                        <Text size="1">
+                            {habit.logs.reduce(
+                                (p, c) => p + (c.is_done ? 1 : 0),
+                                0
+                            )}/31
+                        </Text>
+                    </Flex>
                 ))}
                 <AddHabit
                     children={
@@ -139,7 +146,7 @@ const HabitStatsBody: React.FC<{
                 ))}
             </Box>
 
-            <Box width={"150px"}>
+            {/* <Box width={"60px"}>
                 <Box
                     height={"60px"}
                     className="flex flex-row border-t border-b"
@@ -172,7 +179,7 @@ const HabitStatsBody: React.FC<{
                         </Box>
                     </Box>
                 ))}
-            </Box>
+            </Box> */}
         </Flex>
     );
 };

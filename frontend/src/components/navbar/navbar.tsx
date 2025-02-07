@@ -21,15 +21,18 @@ const NavBar: React.FC<PropType> = ({ mod, toggleTheme }) => {
             style={{ borderBottom: "2px solid var(--gray-5)" }}
         >
             <Flex direction={"row"} justify={"between"}>
-                <Box>
-                    <Heading
-                        className="cursor-pointer"
-                        onClick={() => navigate("/")}
-                        children="Habit Tracker"
-                        color="grass"
-                    />
-                </Box>
                 {user ? (
+                    <Box>
+                        <Heading
+                            className="cursor-pointer text-[var(--accent-10)]"
+                            onClick={() => navigate("/")}
+                            children="Habit Tracker"
+                        />
+                    </Box>
+                ) : (
+                    ""
+                )}
+                {/* {user ? (
                     <Flex direction={"row"} align={"center"} gap={"9"}>
                         <Link
                             onClick={() => navigate("/dashboard")}
@@ -52,7 +55,7 @@ const NavBar: React.FC<PropType> = ({ mod, toggleTheme }) => {
                     </Flex>
                 ) : (
                     ""
-                )}
+                )} */}
                 <Flex direction={"row"} align={"center"} gap={"2"}>
                     <Button
                         className="cursor-pointer"
