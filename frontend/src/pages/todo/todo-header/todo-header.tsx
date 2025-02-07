@@ -3,7 +3,7 @@ import React from "react";
 
 const TodoHeader: React.FC = ({}) => {
     return (
-        <Box className="p-5">
+        <Box>
             <Flex direction="row" justify="between">
                 <Heading weight="light">Todays Todo</Heading>
                 <Text size="6">3 / 8</Text>

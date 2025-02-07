@@ -11,7 +11,7 @@ function Page() {
     }, []);
 
     return (
-        <div className="min-h-[100vh]">
+        <div className="min-h-svh pb-20 px-4 pt-4">
             <Outlet />
         </div>
     );
