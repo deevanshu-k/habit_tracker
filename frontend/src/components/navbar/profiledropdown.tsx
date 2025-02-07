@@ -33,6 +33,13 @@ const ProfileDropDown: React.FC = () => {
             </DropdownMenu.Trigger>
             <DropdownMenu.Content size="2">
                 <DropdownMenu.Item>Setting</DropdownMenu.Item>
+                <DropdownMenu.Item onClick={() => navigate("/today")}>
+                    Todays todo
+                </DropdownMenu.Item>
+                <DropdownMenu.Item onClick={() => navigate("/habits")}>
+                    Habits
+                </DropdownMenu.Item>
+                <DropdownMenu.Item>Setting</DropdownMenu.Item>
                 <DropdownMenu.Item color="red" onClick={() => signOut()}>
                     Sign Out
                 </DropdownMenu.Item>

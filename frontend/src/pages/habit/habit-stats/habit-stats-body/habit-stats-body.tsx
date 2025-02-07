@@ -15,6 +15,14 @@ import {
     UpdateHabitLogAction,
 } from "../../../../store/habit/habit.action";
 
+const colorMap: Record<string, string> = {
+    Gray: "bg-gray-500",
+    Red: "bg-red-500",
+    Green: "bg-green-500",
+    Pink: "bg-pink-500",
+    Sky: "bg-sky-500",
+};
+
 const HabitStatsBody: React.FC<{
     month: MONTH;
     year: number;
@@ -54,14 +62,13 @@ const HabitStatsBody: React.FC<{
                             i == 0 ? "border-t" : ""
                         }`}
                     >
-                        <Text size={"2"}>
-                            {habit.title}
-                        </Text>
+                        <Text size={"2"}>{habit.title}</Text>
                         <Text size="1">
                             {habit.logs.reduce(
                                 (p, c) => p + (c.is_done ? 1 : 0),
                                 0
-                            )}/31
+                            )}
+                            /31
                         </Text>
                     </Flex>
                 ))}
@@ -118,13 +125,15 @@ const HabitStatsBody: React.FC<{
                         {Array.from({ length: 31 }, (_, i) => (
                             <>
                                 <div
-                                    className={`h-full cursor-pointer ${
-                                        habit.logs[i].is_done
-                                            ? `bg-${habit.color.toLowerCase()}-500`
-                                            : ""
-                                    } hover:bg-green-500 flex items-center justify-center border-r w-[30px] border-b ${
-                                        i == 0 ? "border-l" : ""
-                                    }`}
+                                    className={`h-full cursor-pointer 
+                                        ${
+                                            habit.logs[i].is_done
+                                                ? colorMap[habit.color] || ""
+                                                : ""
+                                        }
+                                        hover:bg-green-500 flex items-center justify-center border-r w-[30px] border-b 
+                                        ${i === 0 ? "border-l" : ""}
+                                    `}
                                     onClick={() =>
                                         getDaysInMonth(year, month) >= i + 1
                                             ? updateHabitLog(

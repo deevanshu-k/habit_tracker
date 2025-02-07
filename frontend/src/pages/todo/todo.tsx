@@ -5,7 +5,7 @@ import { Flex } from "@radix-ui/themes";
 
 const Todo: React.FC = ({}) => {
     return (
-        <Flex direction="column" gap="8">
+        <Flex direction="column" gap="8" className="px-4">
             <TodoHeader />
             <TodoBody />
         </Flex>

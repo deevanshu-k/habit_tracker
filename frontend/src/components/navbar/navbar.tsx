@@ -1,5 +1,5 @@
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { Box, Button, Flex, Heading, Link } from "@radix-ui/themes";
+import { Box, Button, Flex, Heading } from "@radix-ui/themes";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -21,41 +21,14 @@ const NavBar: React.FC<PropType> = ({ mod, toggleTheme }) => {
             style={{ borderBottom: "2px solid var(--gray-5)" }}
         >
             <Flex direction={"row"} justify={"between"}>
-                {user ? (
-                    <Box>
-                        <Heading
-                            className="cursor-pointer text-[var(--accent-10)]"
-                            onClick={() => navigate("/")}
-                            children="Habit Tracker"
-                        />
-                    </Box>
-                ) : (
-                    ""
-                )}
-                {/* {user ? (
-                    <Flex direction={"row"} align={"center"} gap={"9"}>
-                        <Link
-                            onClick={() => navigate("/dashboard")}
-                            className="hover:underline cursor-pointer"
-                        >
-                            Dashboard
-                        </Link>
-                        <Link
-                            onClick={() => navigate("/today")}
-                            className="hover:underline cursor-pointer"
-                        >
-                            Todays TODO
-                        </Link>
-                        <Link
-                            onClick={() => navigate("/habits")}
-                            className="hover:underline cursor-pointer"
-                        >
-                            Habits
-                        </Link>
-                    </Flex>
-                ) : (
-                    ""
-                )} */}
+                <Box>
+                    <Heading
+                        className="cursor-pointer text-[var(--accent-10)]"
+                        onClick={() => navigate("/")}
+                        children="Habit Tracker"
+                    />
+                </Box>
+
                 <Flex direction={"row"} align={"center"} gap={"2"}>
                     <Button
                         className="cursor-pointer"

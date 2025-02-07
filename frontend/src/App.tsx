@@ -45,7 +45,6 @@ function App() {
             <Routes>
                 <Route element={<Page />}>
                     <Route element={<ProtectedRoute />}>
-                        <Route path="/dashboard" element={<h1>Dashboard</h1>} />
                         <Route path="/today" element={<Todo />} />
                         <Route path="/habits" element={<Habit />} />
                     </Route>
@@ -57,8 +56,9 @@ function App() {
                             element={<ForgotPassword />}
                         />
                     </Route>
-                    <Route path="/" element={<Home />} />
                 </Route>
+                <Route path="/" element={<Home />} />
+                <Route path="*" element={<h1>404 Not Found</h1>} />
             </Routes>
             <Footer />
         </Theme>
