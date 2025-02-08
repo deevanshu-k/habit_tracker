@@ -8,6 +8,9 @@ export const FETCH_TODAY_TODOS_FAIL = "todo/today/fetchFail";
 export const ADD_TODO = "todo/add";
 export const ADD_TODO_SUCCESS = "todo/addSuccess";
 export const ADD_TODO_FAIL = "todo/addFail";
+export const UPDATE_TODO = "todo/update";
+export const UPDATE_TODO_SUCCESS = "todo/updateSuccess";
+export const UPDATE_TODO_FAIL = "todo/updateFail";
 
 // Fetch today todos action
 export interface FetchTodayTodosAction extends Action {
@@ -81,6 +84,54 @@ export const addTodoFailAction = (_error: string): AddTodoFailAction => ({
     },
 });
 
+// Update todo action
+export interface UpdateTodoAction extends Action {
+    type: typeof UPDATE_TODO;
+    payload: {
+        id: string;
+        title: string;
+        is_done: boolean;
+    };
+}
+export const updateTodoAction = (
+    _id: string,
+    _title: string,
+    _is_done: boolean
+): UpdateTodoAction => ({
+    type: UPDATE_TODO,
+    payload: {
+        id: _id,
+        title: _title,
+        is_done: _is_done,
+    },
+});
+
+// Add todo success action
+export interface UpdateTodoSuccessAction extends Action {
+    type: typeof UPDATE_TODO_SUCCESS;
+    payload: TodayTodo;
+}
+export const updateTodoSuccessAction = (
+    _todo: TodayTodo
+): UpdateTodoSuccessAction => ({
+    type: UPDATE_TODO_SUCCESS,
+    payload: _todo,
+});
+
+// Add todo fail action
+export interface UpdateTodoFailAction extends Action {
+    type: typeof UPDATE_TODO_FAIL;
+    payload: {
+        error: string;
+    };
+}
+export const updateTodoFailAction = (_error: string): UpdateTodoFailAction => ({
+    type: UPDATE_TODO_FAIL,
+    payload: {
+        error: _error,
+    },
+});
+
 // Actions
 export type TodoActions =
     | FetchTodayTodosAction
@@ -88,4 +139,7 @@ export type TodoActions =
     | FetchTodayTodosFailAction
     | AddTodoAction
     | AddTodoSuccessAction
-    | AddTodoFailAction;
+    | AddTodoFailAction
+    | UpdateTodoAction
+    | UpdateTodoSuccessAction
+    | UpdateTodoFailAction;

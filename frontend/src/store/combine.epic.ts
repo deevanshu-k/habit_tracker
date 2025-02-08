@@ -6,7 +6,11 @@ import {
     getTodayHabitsEpic,
     updateHabitLogEpic,
 } from "./habit/habit.epic";
-import { addTodosEpic, getTodayTodosEpic } from "./todo/todo.epic";
+import {
+    addTodosEpic,
+    getTodayTodosEpic,
+    updateTodosEpic,
+} from "./todo/todo.epic";
 
 export const rootEpic = combineEpics<any>(
     logoutUserEpic,
@@ -16,5 +20,6 @@ export const rootEpic = combineEpics<any>(
     updateHabitLogEpic,
     getTodayHabitsEpic,
     getTodayTodosEpic,
-    addTodosEpic
+    addTodosEpic,
+    updateTodosEpic
 );

@@ -5,6 +5,8 @@ import {
     FETCH_TODAY_TODOS,
     FETCH_TODAY_TODOS_SUCCESS,
     TodoActions,
+    UPDATE_TODO,
+    UPDATE_TODO_SUCCESS,
 } from "./todo.action";
 
 const initialState: TodoState = {
@@ -38,6 +40,18 @@ export const todoReducer = (
             return {
                 ...state,
                 today: { ...state.today, data: action.payload },
+            };
+        case UPDATE_TODO:
+            return { ...state };
+        case UPDATE_TODO_SUCCESS:
+            return {
+                ...state,
+                today: {
+                    ...state.today,
+                    data: state.today.data.map((t) =>
+                        t.id === action.payload.id ? action.payload : t
+                    ),
+                },
             };
         default:
             return { ...state };

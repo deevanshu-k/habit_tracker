@@ -20,6 +20,9 @@ import {
     fetchTodayTodosFailAction,
     fetchTodayTodosSuccessAction,
     TodoActions,
+    UPDATE_TODO,
+    updateTodoFailAction,
+    updateTodoSuccessAction,
 } from "./todo.action";
 import { ofType } from "redux-observable";
 import todoService from "../../api/todo.api";
@@ -66,6 +69,38 @@ export const addTodosEpic = (
                         of(
                             globalLoadingEndAction(),
                             addTodoFailAction(e.response.data.message)
+                        )
+                    )
+                )
+            )
+        )
+    );
+
+export const updateTodosEpic = (
+    action$: Observable<any>
+): Observable<GlobalActions | TodoActions> =>
+    action$.pipe(
+        ofType(UPDATE_TODO),
+        switchMap((action) =>
+            concat(
+                of(globalLoadingStartAction()),
+                from(
+                    todoService.updateTodo(
+                        action.payload.id,
+                        action.payload.title,
+                        action.payload.is_done
+                    )
+                ).pipe(
+                    mergeMap((data) =>
+                        of(
+                            globalLoadingEndAction(),
+                            updateTodoSuccessAction(data)
+                        )
+                    ),
+                    catchError((e) =>
+                        of(
+                            globalLoadingEndAction(),
+                            updateTodoFailAction(e.response.data.message)
                         )
                     )
                 )

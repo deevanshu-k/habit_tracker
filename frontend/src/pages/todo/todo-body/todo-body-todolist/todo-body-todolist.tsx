@@ -1,13 +1,22 @@
 import { Pencil2Icon, PlusCircledIcon, TrashIcon } from "@radix-ui/react-icons";
 import { Box, Checkbox, Flex, Text } from "@radix-ui/themes";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { StoreState, TodayTodo } from "../../../../store/store.type";
+import { Dispatch } from "redux";
+import {
+    updateTodoAction,
+    UpdateTodoAction,
+} from "../../../../store/todo/todo.action";
 
 const TodoBodyTodolist: React.FC = ({}) => {
     const todos = useSelector<StoreState, TodayTodo[]>(
         (s) => s.todo.today.data
     );
+    const dispatch = useDispatch<Dispatch<UpdateTodoAction>>();
+    const updateTodo = (todo_id: string, title: string, is_done: boolean) => {
+        dispatch(updateTodoAction(todo_id, title, is_done));
+    };
     return (
         <Box className="w-full">
             <Flex direction="column" gap="3">
@@ -16,7 +25,10 @@ const TodoBodyTodolist: React.FC = ({}) => {
                         <div>
                             <Checkbox
                                 checked={t.is_done}
-                                className=""
+                                onClick={() =>
+                                    updateTodo(t.id, t.title, !t.is_done)
+                                }
+                                className="cursor-pointer"
                                 size="3"
                             />
                         </div>
