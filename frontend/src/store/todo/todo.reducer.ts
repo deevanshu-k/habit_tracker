@@ -1,5 +1,7 @@
 import { TodoState } from "../store.type";
 import {
+    ADD_TODO,
+    ADD_TODO_SUCCESS,
     FETCH_TODAY_TODOS,
     FETCH_TODAY_TODOS_SUCCESS,
     TodoActions,
@@ -17,6 +19,16 @@ export const todoReducer = (
     action: TodoActions
 ): TodoState => {
     switch (action.type) {
+        case ADD_TODO:
+            return { ...state };
+        case ADD_TODO_SUCCESS:
+            return {
+                ...state,
+                today: {
+                    ...state.today,
+                    data: [...state.today.data, action.payload],
+                },
+            };
         case FETCH_TODAY_TODOS:
             return {
                 ...state,

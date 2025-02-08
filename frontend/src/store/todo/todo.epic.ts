@@ -13,6 +13,9 @@ import {
     globalLoadingStartAction,
 } from "../global/global.action";
 import {
+    ADD_TODO,
+    addTodoFailAction,
+    addTodoSuccessAction,
     FETCH_TODAY_TODOS,
     fetchTodayTodosFailAction,
     fetchTodayTodosSuccessAction,
@@ -40,6 +43,29 @@ export const getTodayTodosEpic = (
                         of(
                             globalLoadingEndAction(),
                             fetchTodayTodosFailAction(e.response.data.message)
+                        )
+                    )
+                )
+            )
+        )
+    );
+
+export const addTodosEpic = (
+    action$: Observable<any>
+): Observable<GlobalActions | TodoActions> =>
+    action$.pipe(
+        ofType(ADD_TODO),
+        switchMap((action) =>
+            concat(
+                of(globalLoadingStartAction()),
+                from(todoService.createTodo(action.payload)).pipe(
+                    mergeMap((data) =>
+                        of(globalLoadingEndAction(), addTodoSuccessAction(data))
+                    ),
+                    catchError((e) =>
+                        of(
+                            globalLoadingEndAction(),
+                            addTodoFailAction(e.response.data.message)
                         )
                     )
                 )
