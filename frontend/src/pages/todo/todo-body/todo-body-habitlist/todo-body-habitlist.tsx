@@ -1,4 +1,4 @@
-import { Pencil2Icon, PlusCircledIcon, TrashIcon } from "@radix-ui/react-icons";
+import { Pencil2Icon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { Box, Checkbox, Flex, Text } from "@radix-ui/themes";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,9 +10,10 @@ import {
 } from "../../../../store/habit/habit.action";
 
 const TodoBodyHabitlist: React.FC = ({}) => {
-    const habits = useSelector<StoreState, TodayHabit[]>(
-        (s) => s.habit.today.data
-    );
+    const habits = useSelector<StoreState, TodayHabit[]>((s) => [
+        ...s.habit.today.data.filter((h) => !h.is_done),
+        ...s.habit.today.data.filter((h) => h.is_done),
+    ]);
     const dispatch = useDispatch<Dispatch<UpdateHabitLogAction>>();
     const now = new Date();
     const updateHabitStatus = (
