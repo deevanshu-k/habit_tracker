@@ -124,7 +124,7 @@ export const getTodayHabits = {
                     color: true,
                 },
             });
-            
+
             // Get todays logs for habits
             const now = new Date();
             const logs = await db.habitLog.findMany({
@@ -242,9 +242,47 @@ export const updateHabit = {
 };
 export const deleteHabit = {
     validator: celebrate({
-        body: {},
+        params: Joi.object({
+            id: Joi.string().required(),
+        }),
     }),
-    controller: async (req: Request, res: Response) => {},
+    controller: async (req: AuthenticatedRequest, res: Response) => {
+        try {
+            if (!req.user) {
+                res.json({
+                    code: 401,
+                    message: UNAUTHORIZED_REQUEST,
+                });
+                return;
+            }
+
+            // Delete habit
+            const { id } = req.params;
+            const habit = await db.habit.update({
+                where: {
+                    id: id,
+                    userId: req.user.id,
+                },
+                data: {
+                    is_deleted: true,
+                },
+                select: {
+                    id: true,
+                },
+            });
+
+            res.status(200).json({
+                code: 200,
+                message: SUCCESS,
+                data: habit,
+            });
+        } catch (error) {
+            res.status(500).json({
+                code: 500,
+                message: SOMETHING_WENT_WRONG,
+            });
+        }
+    },
 };
 export const updateHabitLog = {
     validator: celebrate({
