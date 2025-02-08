@@ -88,7 +88,22 @@ export const habitReducer = (
                 }
                 return h;
             });
-            return { ...state, data: habits };
+            const now = new Date();
+            return {
+                ...state,
+                data: habits,
+                today: state.today.isAlreadyFetched
+                    ? {
+                          ...state.today,
+                          data: state.today.data.map((th) =>
+                              action.payload.habit_id === th.id &&
+                              action.payload.date === now.getDate()
+                                  ? { ...th, is_done: action.payload.is_done }
+                                  : th
+                          ),
+                      }
+                    : { ...state.today },
+            };
         default:
             return { ...state };
     }
