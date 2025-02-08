@@ -100,7 +100,65 @@ export const getTodayHabits = {
     validator: celebrate({
         body: {},
     }),
-    controller: async (req: Request, res: Response) => {},
+    controller: async (req: AuthenticatedRequest, res: Response) => {
+        try {
+            if (!req.user) {
+                res.json({
+                    code: 401,
+                    message: UNAUTHORIZED_REQUEST,
+                });
+                return;
+            }
+
+            // Get all habits
+            const habits = await db.habit.findMany({
+                where: {
+                    userId: req.user.id,
+                    is_archived: false,
+                    is_deleted: false,
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    description: true,
+                    color: true,
+                },
+            });
+            
+            // Get todays logs for habits
+            const now = new Date();
+            const logs = await db.habitLog.findMany({
+                where: {
+                    habitId: { in: habits.map((h) => h.id) },
+                    date: now.getDate(),
+                    month: now.getMonth() + 1,
+                    year: now.getFullYear(),
+                },
+            });
+
+            // Create habit to is_done map
+            const logMap = new Map(
+                logs.map((log) => [log.habitId, log.is_done])
+            );
+
+            // Create response for all habit data with is_done attribute
+            const resData = habits.map((habit) => ({
+                ...habit,
+                is_done: logMap.get(habit.id) || false,
+            }));
+
+            res.status(200).json({
+                code: 200,
+                message: SUCCESS,
+                data: resData,
+            });
+        } catch (error) {
+            res.status(500).json({
+                code: 500,
+                message: SOMETHING_WENT_WRONG,
+            });
+        }
+    },
 };
 export const getHabits = {
     validator: celebrate({
@@ -122,6 +180,7 @@ export const getHabits = {
             const { month, year } = req.query;
             const habits = await db.habit.findMany({
                 where: {
+                    userId: req.user.id,
                     is_archived: false,
                     is_deleted: false,
                 },
