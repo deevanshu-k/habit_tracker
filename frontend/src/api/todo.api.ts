@@ -10,7 +10,7 @@ export interface GetTodayTodosResponse {
 }
 
 const todoService = {
-    getTodayTodos: async (): Promise<GetTodayTodosResponse> => {
+    getTodayTodos: async (): Promise<GetTodayTodosResponse[]> => {
         const res = await axiosInstance.get(`/api/todo/today`);
         return res.data.data;
     },

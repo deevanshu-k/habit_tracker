@@ -39,6 +39,15 @@ export interface TodayHabit {
     is_done: boolean;
 }
 
+export interface TodayTodo {
+    id: string;
+    title: string;
+    date: number;
+    month: number;
+    year: number;
+    is_done: boolean;
+}
+
 export interface GlobalState {
     loading: number;
 }
@@ -55,8 +64,16 @@ export interface HabitState {
     };
 }
 
+export interface TodoState {
+    today: {
+        isAlreadyFetched: boolean;
+        data: TodayTodo[];
+    };
+}
+
 export interface StoreState {
     user: UserState;
     habit: HabitState;
+    todo: TodoState;
     global: GlobalState;
 }

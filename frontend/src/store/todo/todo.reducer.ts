@@ -1,0 +1,33 @@
+import { TodoState } from "../store.type";
+import {
+    FETCH_TODAY_TODOS,
+    FETCH_TODAY_TODOS_SUCCESS,
+    TodoActions,
+} from "./todo.action";
+
+const initialState: TodoState = {
+    today: {
+        isAlreadyFetched: false,
+        data: [],
+    },
+};
+
+export const todoReducer = (
+    state: TodoState = initialState,
+    action: TodoActions
+): TodoState => {
+    switch (action.type) {
+        case FETCH_TODAY_TODOS:
+            return {
+                ...state,
+                today: { isAlreadyFetched: true, data: [] },
+            };
+        case FETCH_TODAY_TODOS_SUCCESS:
+            return {
+                ...state,
+                today: { ...state.today, data: action.payload },
+            };
+        default:
+            return { ...state };
+    }
+};

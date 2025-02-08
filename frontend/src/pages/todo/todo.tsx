@@ -9,16 +9,27 @@ import {
     fetchTodayHabitsAction,
     FetchTodayHabitsAction,
 } from "../../store/habit/habit.action";
+import {
+    fetchTodayTodosAction,
+    FetchTodayTodosAction,
+} from "../../store/todo/todo.action";
 
 const Todo: React.FC = ({}) => {
-    const isAlreadyFetched = useSelector<StoreState, boolean>(
+    const isHabitAlreadyFetched = useSelector<StoreState, boolean>(
         (s) => s.habit.today.isAlreadyFetched
     );
-    const dispatch = useDispatch<Dispatch<FetchTodayHabitsAction>>();
+    const isTodoAlreadyFetched = useSelector<StoreState, boolean>(
+        (s) => s.todo.today.isAlreadyFetched
+    );
+    const dispatch =
+        useDispatch<Dispatch<FetchTodayHabitsAction | FetchTodayTodosAction>>();
 
     useEffect(() => {
-        if (!isAlreadyFetched) {
+        if (!isHabitAlreadyFetched) {
             dispatch(fetchTodayHabitsAction());
+        }
+        if (!isTodoAlreadyFetched) {
+            dispatch(fetchTodayTodosAction());
         }
     }, []);
     return (
