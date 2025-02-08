@@ -105,3 +105,59 @@ export const getTodayTodos = {
         }
     },
 };
+
+export const updateTodo = {
+    validator: celebrate({
+        params: Joi.object({
+            id: Joi.string().required(),
+        }),
+        body: Joi.object({
+            title: Joi.string().required(),
+            is_done: Joi.bool().required(),
+        }),
+    }),
+    controller: async (req: AuthenticatedRequest, res: Response) => {
+        try {
+            if (!req.user) {
+                res.json({
+                    code: 401,
+                    message: UNAUTHORIZED_REQUEST,
+                });
+                return;
+            }
+
+            // Update todo
+            const { id } = req.params;
+            const { title, is_done } = req.body;
+            const todo = await db.todo.update({
+                where: {
+                    id: id,
+                    userId: req.user.id,
+                },
+                data: {
+                    title: title,
+                    is_done: is_done,
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    date: true,
+                    month: true,
+                    year: true,
+                    is_done: true,
+                },
+            });
+
+            res.status(200).json({
+                code: 200,
+                message: SUCCESS,
+                data: todo,
+            });
+        } catch (error) {
+            res.status(500).json({
+                code: 500,
+                message: SOMETHING_WENT_WRONG,
+            });
+        }
+    },
+};
