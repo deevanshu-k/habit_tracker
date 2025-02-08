@@ -50,7 +50,25 @@ export const habitReducer = (
                     note: "",
                 })),
             };
-            return { ...state, data: [...state.data, newHabit] };
+            return {
+                ...state,
+                data: [...state.data, newHabit],
+                today: state.today.isAlreadyFetched
+                    ? {
+                          ...state.today,
+                          data: [
+                              ...state.today.data,
+                              {
+                                  id: newHabit.id,
+                                  title: newHabit.title,
+                                  description: newHabit.description,
+                                  color: newHabit.color,
+                                  is_done: false,
+                              },
+                          ],
+                      }
+                    : { ...state.today },
+            };
         case UPDATE_HABITLOG_SUCCESS:
             let habits = state.data.map((h) => {
                 if (h.id === action.payload.habit_id) {
