@@ -8,6 +8,7 @@ import {
     updateTodoAction,
     UpdateTodoAction,
 } from "../../../../store/todo/todo.action";
+import EditTodo from "../../../../components/edit-todo/edit-todo";
 
 const TodoBodyTodolist: React.FC = ({}) => {
     const todos = useSelector<StoreState, TodayTodo[]>((s) => [
@@ -37,11 +38,18 @@ const TodoBodyTodolist: React.FC = ({}) => {
                             <Text>{t.title}</Text>
                         </div>
                         <Flex gap="3">
-                            <Pencil2Icon
-                                width="16px"
-                                height={"16px"}
-                                className="hidden group-hover:block hover:text-[var(--accent-10)] cursor-pointer"
-                            />
+                            <EditTodo
+                                previous_title={t.title}
+                                onSubmit={(_title) =>
+                                    updateTodo(t.id, _title, t.is_done)
+                                }
+                            >
+                                <Pencil2Icon
+                                    width="16px"
+                                    height={"16px"}
+                                    className="hidden group-hover:block hover:text-[var(--accent-10)] cursor-pointer"
+                                />
+                            </EditTodo>
                             <TrashIcon
                                 width="16px"
                                 height={"16px"}
