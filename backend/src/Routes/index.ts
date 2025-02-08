@@ -9,7 +9,7 @@ const router = Router();
 
 router.use("/auth", authRouter);
 router.use("/habit", authMiddleware, habitRouter);
-router.use("/todo", todoRouter);
+router.use("/todo", authMiddleware, todoRouter);
 router.use("/user", authMiddleware, userRouter);
 
 export default router;
