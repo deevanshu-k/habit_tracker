@@ -31,6 +31,14 @@ export interface Habit {
     logs: HabitLog[];
 }
 
+export interface TodayHabit {
+    id: string;
+    title: string;
+    description: string;
+    color: string;
+    is_done: boolean;
+}
+
 export interface GlobalState {
     loading: number;
 }
@@ -41,6 +49,10 @@ export interface UserState {
 
 export interface HabitState {
     data: Habit[];
+    today: {
+        isAlreadyFetched: boolean;
+        data: TodayHabit[];
+    };
 }
 
 export interface StoreState {

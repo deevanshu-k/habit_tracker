@@ -3,12 +3,18 @@ import {
     ADD_HABIT_SUCCESS,
     FETCH_HABIT_FAIL,
     FETCH_HABIT_SUCCESS,
+    FETCH_TODAY_HABITS,
+    FETCH_TODAY_HABITS_SUCCESS,
     HabitActions,
     UPDATE_HABITLOG_SUCCESS,
 } from "./habit.action";
 
 const initialState: HabitState = {
     data: [],
+    today: {
+        data: [],
+        isAlreadyFetched: false,
+    },
 };
 
 export const habitReducer = (
@@ -16,6 +22,13 @@ export const habitReducer = (
     action: HabitActions
 ): HabitState => {
     switch (action.type) {
+        case FETCH_TODAY_HABITS:
+            return { ...state, today: { isAlreadyFetched: true, data: [] } };
+        case FETCH_TODAY_HABITS_SUCCESS:
+            return {
+                ...state,
+                today: { ...state.today, data: action.payload },
+            };
         case FETCH_HABIT_SUCCESS:
             return { ...state, data: action.payload.habits };
         case FETCH_HABIT_FAIL:

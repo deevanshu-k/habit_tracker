@@ -1,5 +1,5 @@
 import { Action } from "redux";
-import { Habit } from "../store.type";
+import { Habit, TodayHabit } from "../store.type";
 import { AddHabitResponse } from "../../api/habit.api";
 
 // Action types
@@ -12,6 +12,9 @@ export const ADD_HABIT_FAIL = "habit/addFail";
 export const UPDATE_HABITLOG = "habit/log/update";
 export const UPDATE_HABITLOG_SUCCESS = "habit/log/updateSuccess";
 export const UPDATE_HABITLOG_FAIL = "habit/log/updateFail";
+export const FETCH_TODAY_HABITS = "habit/today/fetch";
+export const FETCH_TODAY_HABITS_SUCCESS = "habit/today/fetchSuccess";
+export const FETCH_TODAY_HABITS_FAIL = "habit/today/fetchFail";
 
 // Fetch Habit Action
 export interface FetchHabitAction extends Action {
@@ -181,6 +184,42 @@ export const updateHabitLogFailAction = (
     },
 });
 
+// Fetch today habits action
+export interface FetchTodayHabitsAction extends Action {
+    type: typeof FETCH_TODAY_HABITS;
+}
+export const fetchTodayHabitsAction = (): FetchTodayHabitsAction => ({
+    type: FETCH_TODAY_HABITS,
+});
+
+// Fetch today habits success action
+export interface FetchTodayHabitsSuccessAction extends Action {
+    type: typeof FETCH_TODAY_HABITS_SUCCESS;
+    payload: TodayHabit[];
+}
+export const fetchTodayHabitsSuccessAction = (
+    _habits: TodayHabit[]
+): FetchTodayHabitsSuccessAction => ({
+    type: FETCH_TODAY_HABITS_SUCCESS,
+    payload: _habits,
+});
+
+// Fetch today habits fail action
+export interface FetchTodayHabitsFailAction extends Action {
+    type: typeof FETCH_TODAY_HABITS_FAIL;
+    payload: {
+        error: string;
+    };
+}
+export const fetchTodayHabitsFailAction = (
+    _error: string
+): FetchTodayHabitsFailAction => ({
+    type: FETCH_TODAY_HABITS_FAIL,
+    payload: {
+        error: _error,
+    },
+});
+
 // Actions
 export type HabitActions =
     | FetchHabitAction
@@ -191,4 +230,7 @@ export type HabitActions =
     | AddHabitFailAction
     | UpdateHabitLogAction
     | UpdateHabitLogSuccessAction
-    | UpdateHabitLogFailAction;
+    | UpdateHabitLogFailAction
+    | FetchTodayHabitsAction
+    | FetchTodayHabitsSuccessAction
+    | FetchTodayHabitsFailAction;

@@ -17,8 +17,11 @@ import {
     addHabitFailAction,
     addHabitSuccessAction,
     FETCH_HABIT,
+    FETCH_TODAY_HABITS,
     fetchHabitFailAction,
     fetchHabitSuccessAction,
+    fetchTodayHabitsFailAction,
+    fetchTodayHabitsSuccessAction,
     HabitActions,
     UPDATE_HABITLOG,
     updateHabitLogFailAction,
@@ -128,6 +131,32 @@ export const updateHabitLogEpic = (
                         of(
                             globalLoadingEndAction(),
                             updateHabitLogFailAction(e.response.data.message)
+                        )
+                    )
+                )
+            )
+        )
+    );
+
+export const getTodayHabitsEpic = (
+    action$: Observable<any>
+): Observable<GlobalActions | HabitActions> =>
+    action$.pipe(
+        ofType(FETCH_TODAY_HABITS),
+        switchMap(() =>
+            concat(
+                of(globalLoadingStartAction()),
+                from(habitService.getTodayHabits()).pipe(
+                    mergeMap((data) =>
+                        of(
+                            globalLoadingEndAction(),
+                            fetchTodayHabitsSuccessAction(data)
+                        )
+                    ),
+                    catchError((e) =>
+                        of(
+                            globalLoadingEndAction(),
+                            fetchTodayHabitsFailAction(e.response.data.message)
                         )
                     )
                 )

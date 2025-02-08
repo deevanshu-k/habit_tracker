@@ -16,11 +16,23 @@ export interface UpdateHabitLogResponse {
     note: string;
 }
 
+export interface GetTodayHabitsResponse {
+    id: string;
+    title: string;
+    description: string;
+    color: string;
+    is_done: boolean;
+}
+
 const habitService = {
     getHabits: async (month: number, year: number): Promise<Habit[]> => {
         const res = await axiosInstance.get(
             `/api/habit?month=${month}&year=${year}`
         );
+        return res.data.data;
+    },
+    getTodayHabits: async (): Promise<GetTodayHabitsResponse[]> => {
+        const res = await axiosInstance.get(`/api/habit/today`);
         return res.data.data;
     },
     addHabit: async (
