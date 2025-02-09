@@ -1,5 +1,4 @@
-import axiosInstance from "./api_instance";
-
+import axiosInstance, { ResponseType } from "./api_instance";
 export interface GetTodayTodosResponse {
     id: string;
     title: string;
@@ -27,6 +26,10 @@ export interface UpdateTodoResponse {
     is_done: boolean;
 }
 
+export interface DeleteTodoResponse {
+    id: string;
+}
+
 const todoService = {
     createTodo: async (_title: string): Promise<CreateTodoResponse> => {
         const res = await axiosInstance.post("/api/todo", {
@@ -47,6 +50,12 @@ const todoService = {
             title: _title,
             is_done: _is_done,
         });
+        return res.data.data;
+    },
+    deleteTodo: async (_id: string): Promise<DeleteTodoResponse> => {
+        const res = await axiosInstance.delete<
+            ResponseType<DeleteTodoResponse>
+        >(`/api/todo/${_id}`);
         return res.data.data;
     },
 };

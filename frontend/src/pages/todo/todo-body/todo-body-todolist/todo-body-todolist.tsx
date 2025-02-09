@@ -5,19 +5,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { StoreState, TodayTodo } from "../../../../store/store.type";
 import { Dispatch } from "redux";
 import {
+    deleteTodoAction,
+    DeleteTodoAction,
     updateTodoAction,
     UpdateTodoAction,
 } from "../../../../store/todo/todo.action";
 import EditTodo from "../../../../components/edit-todo/edit-todo";
+import ConfirmDialogBox from "../../../../components/confirm-dialog-box/confirm-dialog-box";
 
 const TodoBodyTodolist: React.FC = ({}) => {
     const todos = useSelector<StoreState, TodayTodo[]>((s) => [
         ...s.todo.today.data.filter((t) => !t.is_done),
         ...s.todo.today.data.filter((t) => t.is_done),
     ]);
-    const dispatch = useDispatch<Dispatch<UpdateTodoAction>>();
+    const dispatch =
+        useDispatch<Dispatch<UpdateTodoAction | DeleteTodoAction>>();
     const updateTodo = (todo_id: string, title: string, is_done: boolean) => {
         dispatch(updateTodoAction(todo_id, title, is_done));
+    };
+    const deleteTodo = (todo_id: string) => {
+        dispatch(deleteTodoAction(todo_id));
     };
     return (
         <Box className="w-full">
@@ -50,11 +57,18 @@ const TodoBodyTodolist: React.FC = ({}) => {
                                     className="hidden group-hover:block hover:text-[var(--accent-10)] cursor-pointer"
                                 />
                             </EditTodo>
-                            <TrashIcon
-                                width="16px"
-                                height={"16px"}
-                                className=" hover:text-[var(--accent-10)] cursor-pointer"
-                            />
+                            <ConfirmDialogBox
+                                title="Are you sure? you want to delete this todo"
+                                description={`${t.title}`}
+                                onCancel={() => null}
+                                onConfirm={() => deleteTodo(t.id)}
+                            >
+                                <TrashIcon
+                                    width="16px"
+                                    height={"16px"}
+                                    className=" hover:text-[var(--accent-10)] cursor-pointer"
+                                />
+                            </ConfirmDialogBox>
                         </Flex>
                     </Box>
                 ))}

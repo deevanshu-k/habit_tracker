@@ -16,6 +16,9 @@ import {
     ADD_TODO,
     addTodoFailAction,
     addTodoSuccessAction,
+    DELETE_TODO,
+    deleteTodoFailAction,
+    deleteTodoSuccessAction,
     FETCH_TODAY_TODOS,
     fetchTodayTodosFailAction,
     fetchTodayTodosSuccessAction,
@@ -101,6 +104,32 @@ export const updateTodosEpic = (
                         of(
                             globalLoadingEndAction(),
                             updateTodoFailAction(e.response.data.message)
+                        )
+                    )
+                )
+            )
+        )
+    );
+
+export const deleteTodosEpic = (
+    action$: Observable<any>
+): Observable<GlobalActions | TodoActions> =>
+    action$.pipe(
+        ofType(DELETE_TODO),
+        switchMap((action) =>
+            concat(
+                of(globalLoadingStartAction()),
+                from(todoService.deleteTodo(action.payload.id)).pipe(
+                    mergeMap((data) =>
+                        of(
+                            globalLoadingEndAction(),
+                            deleteTodoSuccessAction(data.id)
+                        )
+                    ),
+                    catchError((e) =>
+                        of(
+                            globalLoadingEndAction(),
+                            deleteTodoFailAction(e.response.data.message)
                         )
                     )
                 )

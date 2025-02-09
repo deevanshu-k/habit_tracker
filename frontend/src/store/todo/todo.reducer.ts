@@ -2,6 +2,8 @@ import { TodoState } from "../store.type";
 import {
     ADD_TODO,
     ADD_TODO_SUCCESS,
+    DELETE_TODO,
+    DELETE_TODO_SUCCESS,
     FETCH_TODAY_TODOS,
     FETCH_TODAY_TODOS_SUCCESS,
     TodoActions,
@@ -50,6 +52,18 @@ export const todoReducer = (
                     ...state.today,
                     data: state.today.data.map((t) =>
                         t.id === action.payload.id ? action.payload : t
+                    ),
+                },
+            };
+        case DELETE_TODO:
+            return { ...state };
+        case DELETE_TODO_SUCCESS:
+            return {
+                ...state,
+                today: {
+                    ...state.today,
+                    data: state.today.data.filter(
+                        (t) => t.id !== action.payload.id
                     ),
                 },
             };

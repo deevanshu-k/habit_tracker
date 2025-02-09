@@ -8,6 +8,7 @@ import {
 } from "./habit/habit.epic";
 import {
     addTodosEpic,
+    deleteTodosEpic,
     getTodayTodosEpic,
     updateTodosEpic,
 } from "./todo/todo.epic";
@@ -21,5 +22,6 @@ export const rootEpic = combineEpics<any>(
     getTodayHabitsEpic,
     getTodayTodosEpic,
     addTodosEpic,
-    updateTodosEpic
+    updateTodosEpic,
+    deleteTodosEpic
 );
