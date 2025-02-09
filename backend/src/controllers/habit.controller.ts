@@ -138,13 +138,19 @@ export const getTodayHabits = {
 
             // Create habit to is_done map
             const logMap = new Map(
-                logs.map((log) => [log.habitId, log.is_done])
+                logs.map((log) => [
+                    log.habitId,
+                    { is_done: log.is_done, note: log.note },
+                ])
             );
 
             // Create response for all habit data with is_done attribute
             const resData = habits.map((habit) => ({
                 ...habit,
-                is_done: logMap.get(habit.id) || false,
+                is_done: logMap.has(habit.id)
+                    ? logMap.get(habit.id)?.is_done
+                    : false,
+                note: logMap.has(habit.id) ? logMap.get(habit.id)?.note : "",
             }));
 
             res.status(200).json({
