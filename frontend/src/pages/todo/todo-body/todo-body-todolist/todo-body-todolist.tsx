@@ -30,7 +30,10 @@ const TodoBodyTodolist: React.FC = ({}) => {
         <Box className="w-full">
             <Flex direction="column" gap="3">
                 {todos.map((t) => (
-                    <Box className="group px-4 rounded border border-[var(--gray-7)] w-full h-[50px] flex flex-row gap-4 justify-between items-center">
+                    <Box
+                        key={t.id}
+                        className="group px-4 rounded border border-[var(--gray-7)] w-full h-[50px] flex flex-row gap-4 justify-between items-center"
+                    >
                         <div>
                             <Checkbox
                                 checked={t.is_done}
