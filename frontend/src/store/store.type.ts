@@ -37,6 +37,7 @@ export interface TodayHabit {
     description: string;
     color: string;
     is_done: boolean;
+    note: string;
 }
 
 export interface TodayTodo {

@@ -22,6 +22,7 @@ export interface GetTodayHabitsResponse {
     description: string;
     color: string;
     is_done: boolean;
+    note: string;
 }
 
 const habitService = {
