@@ -1,4 +1,4 @@
-import { Button, Dialog, Flex, TextField } from "@radix-ui/themes";
+import { Button, Dialog, Flex, TextField, Tooltip } from "@radix-ui/themes";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -6,14 +6,17 @@ const EditTodo: React.FC<{
     children: React.ReactNode;
     previous_title: string;
     onSubmit: (_title: string) => void;
-}> = ({ children, previous_title, onSubmit }) => {
+    tooltip: string;
+}> = ({ children, previous_title, onSubmit, tooltip }) => {
     const { register, handleSubmit } = useForm<{
         title: string;
     }>({ defaultValues: { title: previous_title } });
 
     return (
         <Dialog.Root>
-            <Dialog.Trigger>{children}</Dialog.Trigger>
+            <Tooltip content={tooltip}>
+                <Dialog.Trigger>{children}</Dialog.Trigger>
+            </Tooltip>
 
             <Dialog.Content maxWidth={"400px"}>
                 <Dialog.Title size={"2"}>Todo</Dialog.Title>

@@ -49,6 +49,7 @@ const TodoBodyTodolist: React.FC = ({}) => {
                         </div>
                         <Flex gap="3">
                             <EditTodo
+                                tooltip="Edit todo"
                                 previous_title={t.title}
                                 onSubmit={(_title) =>
                                     updateTodo(t.id, _title, t.is_done)
@@ -61,6 +62,7 @@ const TodoBodyTodolist: React.FC = ({}) => {
                                 />
                             </EditTodo>
                             <ConfirmDialogBox
+                                tooltip="Delete todo"
                                 title="Are you sure? you want to delete this todo"
                                 description={`${t.title}`}
                                 onCancel={() => null}

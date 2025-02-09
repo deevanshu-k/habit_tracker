@@ -1,4 +1,4 @@
-import { AlertDialog, Button, Flex, Text } from "@radix-ui/themes";
+import { AlertDialog, Button, Flex, Text, Tooltip } from "@radix-ui/themes";
 import React from "react";
 
 const ConfirmDialogBox: React.FC<{
@@ -7,10 +7,13 @@ const ConfirmDialogBox: React.FC<{
     onCancel: () => void;
     title: string;
     description: string;
-}> = ({ children, onCancel, onConfirm, title, description }) => {
+    tooltip: string;
+}> = ({ children, onCancel, onConfirm, title, description, tooltip }) => {
     return (
         <AlertDialog.Root>
-            <AlertDialog.Trigger>{children}</AlertDialog.Trigger>
+            <Tooltip content={tooltip}>
+                <AlertDialog.Trigger>{children}</AlertDialog.Trigger>
+            </Tooltip>
             <AlertDialog.Content size={"1"} maxWidth={"400px"}>
                 <AlertDialog.Title>
                     <Text size="3">{title}</Text>

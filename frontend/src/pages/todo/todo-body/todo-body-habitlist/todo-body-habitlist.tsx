@@ -1,5 +1,5 @@
 import { Pencil2Icon, PlusCircledIcon } from "@radix-ui/react-icons";
-import { Box, Checkbox, Flex, Text } from "@radix-ui/themes";
+import { Box, Checkbox, Flex, Text, Tooltip } from "@radix-ui/themes";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { StoreState, TodayHabit } from "../../../../store/store.type";
@@ -51,11 +51,13 @@ const TodoBodyHabitlist: React.FC = ({}) => {
                             <Text>{h.title}</Text>
                         </div>
                         <Flex gap="3">
-                            <Pencil2Icon
-                                width="16px"
-                                height={"16px"}
-                                className="hidden group-hover:block hover:text-[var(--accent-10)] cursor-pointer"
-                            />
+                            <Tooltip content="Edit habit">
+                                <Pencil2Icon
+                                    width="16px"
+                                    height={"16px"}
+                                    className="hidden group-hover:block hover:text-[var(--accent-10)] cursor-pointer"
+                                />
+                            </Tooltip>
                             <PlusCircledIcon
                                 width="16px"
                                 height={"16px"}
