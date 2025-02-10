@@ -1,11 +1,11 @@
-import { Box, Button, Flex, Text } from "@radix-ui/themes";
+import { Box, Button, Flex, Text, Tooltip } from "@radix-ui/themes";
 import React from "react";
 import {
     getDaysInMonth,
     getOneLetterDayName,
     MONTH,
 } from "../../../../utils/date.utils";
-import { CheckIcon } from "@radix-ui/react-icons";
+import { CheckIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import AddHabit from "../../../../components/add-habbit/add-habit";
 import { useDispatch, useSelector } from "react-redux";
 import { Habit, StoreState } from "../../../../store/store.type";
@@ -58,11 +58,18 @@ const HabitStatsBody: React.FC<{
                     <Flex
                         justify="between"
                         height={"40px"}
-                        className={`flex items-center px-3 border-b border-l ${
+                        className={`flex group items-center px-3 border-b border-l relative ${
                             i == 0 ? "border-t" : ""
                         }`}
                     >
-                        <Text size={"2"}>{habit.title}</Text>
+                        <Text
+                            size={"2"}
+                            className="overflow-hidden max-w-[60%] text-ellipsis whitespace-nowrap"
+                            wrap={"nowrap"}
+                            title={habit.title}
+                        >
+                            {habit.title}
+                        </Text>
                         <Text size="1">
                             {habit.logs.reduce(
                                 (p, c) => p + (c.is_done ? 1 : 0),
@@ -70,6 +77,11 @@ const HabitStatsBody: React.FC<{
                             )}
                             /31
                         </Text>
+                        <Box className="absolute group-hover:flex hidden flex-row-reverse pr-2 items-center right-0 bg-[var(--gray-1)] w-[50px] h-full">
+                            <Tooltip content="Edit habit">
+                                <Pencil2Icon className="cursor-pointer hover:text-[var(--accent-10)]" />
+                            </Tooltip>
+                        </Box>
                     </Flex>
                 ))}
                 <AddHabit
