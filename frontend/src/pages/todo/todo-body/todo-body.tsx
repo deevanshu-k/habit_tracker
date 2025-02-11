@@ -8,19 +8,19 @@ import SeperatorWithMiddleText from "../../../components/seperator-with-middle-t
 const TodoBody: React.FC = ({}) => {
     return (
         <Flex direction="column" align="center" gap="4">
-            <Box className="w-[40%]">
+            <Box className="w-[300px] md:w-[40%]">
                 <TodoBodyInput />
             </Box>
-            <Box className="w-[40%]">
+            <Box className="w-[300px] md:w-[40%]">
                 <SeperatorWithMiddleText txt="Habits" />
             </Box>
-            <Box className="w-[40%]">
+            <Box className="w-[300px] md:w-[40%]">
                 <TodoBodyHabitlist />
             </Box>
-            <Box className="w-[40%]">
+            <Box className="w-[300px] md:w-[40%]">
                 <SeperatorWithMiddleText txt="Todos" />
             </Box>
-            <Box className="w-[40%]">
+            <Box className="w-[300px] md:w-[40%]">
                 <TodoBodyTodolist />
             </Box>
         </Flex>
