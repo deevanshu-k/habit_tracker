@@ -18,10 +18,10 @@ function Page() {
         <>
             {user ? (
                 <Flex direction="row">
-                    <aside className="min-w-[180px]">
+                    <aside className="w-[180px]">
                         <SideNav />
                     </aside>
-                    <div className="flex-grow min-h-svh pb-20 pt-4">
+                    <div className="min-h-svh w-[calc(100%-180px)] pb-20 pt-4">
                         <Outlet />
                     </div>
                 </Flex>

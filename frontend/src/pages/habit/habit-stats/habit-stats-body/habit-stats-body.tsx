@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, Tooltip } from "@radix-ui/themes";
+import { Box, Button, Flex, ScrollArea, Text, Tooltip } from "@radix-ui/themes";
 import React from "react";
 import {
     getDaysInMonth,
@@ -44,7 +44,7 @@ const HabitStatsBody: React.FC<{
     };
 
     return (
-        <Flex direction={"row"}>
+        <Flex direction={"row"} className="">
             <Box width={"200px"}>
                 <Box
                     height={"60px"}
@@ -97,47 +97,50 @@ const HabitStatsBody: React.FC<{
                 />
             </Box>
 
-            <Box>
-                <Box height={"60px"} className="flex items-center">
-                    {Array.from({ length: 31 }, (_, i) => (
-                        <>
-                            <div className="h-full w-[30px]">
-                                <div
-                                    className={`h-[40%] text-center border-t border-r ${
-                                        i == 0 ? "border-l" : ""
-                                    }`}
-                                >
-                                    <Text size={"1"}>
-                                        {getDaysInMonth(year, month) >= i + 1
-                                            ? getOneLetterDayName(
-                                                  year,
-                                                  month,
-                                                  i + 1
-                                              )
-                                            : ""}
-                                    </Text>
-                                </div>
-                                <div
-                                    className={`h-[60%] text-center border-b border-r border-t ${
-                                        i == 0 ? "border-l" : ""
-                                    }`}
-                                >
-                                    <Text className="leading-8" size={"1"}>
-                                        {getDaysInMonth(year, month) >= i + 1
-                                            ? i + 1
-                                            : ""}
-                                    </Text>
-                                </div>
-                            </div>
-                        </>
-                    ))}
-                </Box>
-                {habits.map((habit) => (
-                    <Box height={"40px"} className="flex items-center">
+            <Box className="w-[calc(100% - 200px)] overflow-hidden">
+                <ScrollArea type="always" scrollbars="horizontal">
+                    <Box height={"60px"} className="flex items-center">
                         {Array.from({ length: 31 }, (_, i) => (
                             <>
-                                <div
-                                    className={`h-full cursor-pointer 
+                                <div className="h-full w-[30px]">
+                                    <div
+                                        className={`h-[40%] text-center border-t border-r ${
+                                            i == 0 ? "border-l" : ""
+                                        }`}
+                                    >
+                                        <Text size={"1"}>
+                                            {getDaysInMonth(year, month) >=
+                                            i + 1
+                                                ? getOneLetterDayName(
+                                                      year,
+                                                      month,
+                                                      i + 1
+                                                  )
+                                                : ""}
+                                        </Text>
+                                    </div>
+                                    <div
+                                        className={`h-[60%] text-center border-b border-r border-t ${
+                                            i == 0 ? "border-l" : ""
+                                        }`}
+                                    >
+                                        <Text className="leading-8" size={"1"}>
+                                            {getDaysInMonth(year, month) >=
+                                            i + 1
+                                                ? i + 1
+                                                : ""}
+                                        </Text>
+                                    </div>
+                                </div>
+                            </>
+                        ))}
+                    </Box>
+                    {habits.map((habit) => (
+                        <Box height={"40px"} className="flex items-center">
+                            {Array.from({ length: 31 }, (_, i) => (
+                                <>
+                                    <div
+                                        className={`h-full cursor-pointer 
                                         ${
                                             habit.logs[i].is_done
                                                 ? colorMap[habit.color] || ""
@@ -146,25 +149,30 @@ const HabitStatsBody: React.FC<{
                                         hover:bg-green-500 flex items-center justify-center border-r w-[30px] border-b 
                                         ${i === 0 ? "border-l" : ""}
                                     `}
-                                    onClick={() =>
-                                        getDaysInMonth(year, month) >= i + 1
-                                            ? updateHabitLog(
-                                                  habit.id,
-                                                  habit.logs[i].date,
-                                                  month,
-                                                  year,
-                                                  !habit.logs[i].is_done,
-                                                  habit.logs[i].note
-                                              )
-                                            : ""
-                                    }
-                                >
-                                    {habit.logs[i].is_done ? <CheckIcon /> : ""}
-                                </div>
-                            </>
-                        ))}
-                    </Box>
-                ))}
+                                        onClick={() =>
+                                            getDaysInMonth(year, month) >= i + 1
+                                                ? updateHabitLog(
+                                                      habit.id,
+                                                      habit.logs[i].date,
+                                                      month,
+                                                      year,
+                                                      !habit.logs[i].is_done,
+                                                      habit.logs[i].note
+                                                  )
+                                                : ""
+                                        }
+                                    >
+                                        {habit.logs[i].is_done ? (
+                                            <CheckIcon />
+                                        ) : (
+                                            ""
+                                        )}
+                                    </div>
+                                </>
+                            ))}
+                        </Box>
+                    ))}
+                </ScrollArea>
             </Box>
 
             {/* <Box width={"60px"}>
