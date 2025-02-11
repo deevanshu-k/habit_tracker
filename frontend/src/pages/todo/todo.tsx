@@ -33,7 +33,7 @@ const Todo: React.FC = ({}) => {
         }
     }, []);
     return (
-        <Flex direction="column" gap="8" className="px-4">
+        <Flex direction="column" gap="8" className="p-5">
             <TodoHeader />
             <TodoBody />
         </Flex>

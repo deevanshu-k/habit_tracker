@@ -15,8 +15,8 @@ const Notes: React.FC = () => {
                 </Button>
             </Flex>
             <Flex direction={"column"} p={"4"} gap="3">
-                {Array.from({ length: 5 }).map(() => (
-                    <Box className="border border-gray-500 p-3 w-full">
+                {Array.from({ length: 5 }).map((_, k) => (
+                    <Box key={k} className="border border-gray-500 p-3 w-full">
                         <Text as="p" size={"1"} color="gray">
                             18 March
                         </Text>

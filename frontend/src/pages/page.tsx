@@ -21,7 +21,7 @@ function Page() {
                     <aside className="hidden md:block w-[180px]">
                         <SideNav />
                     </aside>
-                    <div className="min-h-svh w-full md:w-[calc(100%-180px)] pb-20 pt-4">
+                    <div className="min-h-svh w-full md:w-[calc(100%-180px)] pb-20">
                         <Outlet />
                     </div>
                 </Flex>
