@@ -1,19 +1,14 @@
 import React from "react";
 import { getCalendarGrid, MONTH } from "../../../../utils/date.utils";
 import { Box, Grid, Text } from "@radix-ui/themes";
-
-const colorMap: Record<string, string> = {
-    Gray: "bg-gray-500",
-    Red: "bg-red-500",
-    Green: "bg-green-500",
-    Pink: "bg-pink-500",
-    Sky: "bg-sky-500",
-};
+import { useHabitDayWise } from "../../../../hooks/use-habit-day-wise";
+import CellHabitStat from "./cell-habit-stat/cell-habit-stat";
 
 const HabitStatsBody: React.FC<{
     month: MONTH;
     year: number;
 }> = ({ month, year }) => {
+    const dayToHabitsMap = useHabitDayWise({});
     let grid: (number | null)[][] = getCalendarGrid(year, month - 1);
 
     return (
@@ -37,7 +32,7 @@ const HabitStatsBody: React.FC<{
                     {r.map((c, colIndex) => (
                         <Box
                             key={colIndex}
-                            className={`p-4 relative aspect-square text-center border-r-2 border-b-2 border-[var(--gray-7)] last:border-r-0 cursor-pointer`}
+                            className={`p-4 relative flex justify-center items-center aspect-square text-center border-r-2 border-b-2 border-[var(--gray-7)] last:border-r-0`}
                             style={{
                                 borderBottom:
                                     rowIndex === grid.length - 1 ? 0 : "",
@@ -49,6 +44,16 @@ const HabitStatsBody: React.FC<{
                             >
                                 {c}
                             </Text>
+                            {c ? (
+                                <CellHabitStat
+                                    date={c}
+                                    month={month}
+                                    year={year}
+                                    habits={dayToHabitsMap.get(c) || []}
+                                />
+                            ) : (
+                                ""
+                            )}
                         </Box>
                     ))}
                 </Grid>
