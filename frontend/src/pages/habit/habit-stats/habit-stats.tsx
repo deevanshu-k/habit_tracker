@@ -54,7 +54,7 @@ const HabitStats: React.FC = () => {
                 </div>
             </div>
             {/* Sticky Sidebar */}
-            <div className="w-full lg:w-[400px] lg:self-start lg:sticky lg:top-4 p-4 border-2 border-[var(--gray-7)]">
+            <div className="w-full lg:w-[400px] lg:self-start lg:sticky lg:top-10 p-4 border-2 border-[var(--gray-7)]">
                 <Text align="center" as="div" color="gray" className="p-4">
                     Habits
                 </Text>
