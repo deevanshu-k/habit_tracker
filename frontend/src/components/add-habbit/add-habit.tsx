@@ -73,8 +73,10 @@ const AddHabit: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                                         "Green",
                                         "Pink",
                                         "Sky",
-                                    ].map((c) => (
-                                        <Select.Item value={c}>{c}</Select.Item>
+                                    ].map((c, i) => (
+                                        <Select.Item key={i} value={c}>
+                                            {c}
+                                        </Select.Item>
                                     ))}
                                 </Select.Content>
                             </Select.Root>

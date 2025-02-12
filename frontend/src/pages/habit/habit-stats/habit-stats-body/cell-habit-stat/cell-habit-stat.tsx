@@ -68,32 +68,37 @@ const CellHabitStat: React.FC<{
                     {habits
                         .filter((habit) => habit.is_done)
                         .map((habit) => (
-                            <HabitCheckBox
-                                id={habit.id}
-                                is_done={habit.is_done}
-                                title={habit.title}
-                                updateStatus={(s) =>
-                                    updateHabitLog(habit.id, s, habit.note)
-                                }
-                            />
+                            <div key={habit.id}>
+                                <HabitCheckBox
+                                    id={habit.id}
+                                    is_done={habit.is_done}
+                                    title={habit.title}
+                                    updateStatus={(s) =>
+                                        updateHabitLog(habit.id, s, habit.note)
+                                    }
+                                />
+                            </div>
                         ))}
-                    {habits.filter((habit) => habit.is_done).length > 0 &&
-                    habits.filter((habit) => !habit.is_done).length > 0 ? (
+                    {habits.filter((habit) => !habit.is_done).length > 0 &&
+                    habits.filter((habit) => habit.is_done).length > 0 ? (
                         <Separator orientation="horizontal" my={"2"} size="4" />
                     ) : (
                         ""
                     )}
+
                     {habits
                         .filter((habit) => !habit.is_done)
                         .map((habit) => (
-                            <HabitCheckBox
-                                id={habit.id}
-                                is_done={habit.is_done}
-                                title={habit.title}
-                                updateStatus={(s) =>
-                                    updateHabitLog(habit.id, s, habit.note)
-                                }
-                            />
+                            <div key={habit.id}>
+                                <HabitCheckBox
+                                    id={habit.id}
+                                    is_done={habit.is_done}
+                                    title={habit.title}
+                                    updateStatus={(s) =>
+                                        updateHabitLog(habit.id, s, habit.note)
+                                    }
+                                />
+                            </div>
                         ))}
                 </Flex>
             </HoverCard.Content>

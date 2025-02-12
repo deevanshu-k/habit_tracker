@@ -3,6 +3,7 @@ import { Box, Button, Flex, Text } from "@radix-ui/themes";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Habit, StoreState } from "../../../../store/store.type";
+import AddHabit from "../../../../components/add-habbit/add-habit";
 
 const HabitStickySideBar: React.FC = ({}) => {
     const habits = useSelector<StoreState, Habit[]>((s) => s.habit.data);
@@ -13,7 +14,10 @@ const HabitStickySideBar: React.FC = ({}) => {
             </Text>
             <Flex direction="column" gap={"4"}>
                 {habits.map((habit) => (
-                    <Box className="w-full relative group shadow-[var(--grass-2)] shadow-sm">
+                    <Box
+                        key={habit.id}
+                        className="w-full relative group shadow-[var(--grass-2)] shadow-sm"
+                    >
                         <div className="flex flex-row justify-between p-3 shadow-lg">
                             <Text as="div" color="gray">
                                 {habit.title}
@@ -53,14 +57,16 @@ const HabitStickySideBar: React.FC = ({}) => {
                     </Box>
                 ))}
 
-                <Button
-                    variant="soft"
-                    color="grass"
-                    className="w-full h-[40px]"
-                >
-                    <PlusIcon />
-                    <Text>Add Habit</Text>
-                </Button>
+                <AddHabit>
+                    <Button
+                        variant="soft"
+                        color="grass"
+                        className="w-full h-[40px]"
+                    >
+                        <PlusIcon />
+                        <Text>Add Habit</Text>
+                    </Button>
+                </AddHabit>
             </Flex>
         </>
     );
