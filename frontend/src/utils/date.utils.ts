@@ -36,6 +36,7 @@ export const getCalendarGrid = (
     year: number,
     month: number
 ): (number | null)[][] => {
+    const now = new Date();
     const firstDay = new Date(year, month, 1).getDay(); // Get starting weekday (0 = Sunday, ..., 6 = Saturday)
     const totalDays = new Date(year, month + 1, 0).getDate(); // Get total days in the current month
 
@@ -49,7 +50,17 @@ export const getCalendarGrid = (
 
     // Fill current month days
     for (let i = 1; i <= totalDays; i++) {
-        week.push(new Date(year, month, i).getDate()); // "YYYY-MM-DD"
+        if (
+            year > now.getFullYear() ||
+            (year == now.getFullYear() && month > now.getMonth()) ||
+            (year == now.getFullYear() &&
+                month == now.getMonth() &&
+                i > now.getDate())
+        ) {
+            week.push(null);
+        } else {
+            week.push(new Date(year, month, i).getDate()); // "YYYY-MM-DD"
+        }
 
         // If week is complete, push to grid and reset
         if (week.length === 7) {
