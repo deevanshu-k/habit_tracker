@@ -9,6 +9,7 @@ const SelectMonth: React.FC<{
     month: MONTH;
     year: number;
 }> = ({ goToPrevMonth, goToNextMonth, month, year }) => {
+    const now = new Date();
     return (
         <div className="flex items-center justify-between w-[160px]">
             <Button size={"1"} variant="ghost" onClick={goToPrevMonth}>
@@ -17,7 +18,12 @@ const SelectMonth: React.FC<{
             <Text size={"2"} mx={"3"}>
                 {getMonthName(month)}, {year}
             </Text>
-            <Button size={"1"} variant="ghost" onClick={goToNextMonth}>
+            <Button
+                size={"1"}
+                variant="ghost"
+                disabled={now.getMonth() + 1 <= month}
+                onClick={goToNextMonth}
+            >
                 <ChevronRightIcon />
             </Button>
         </div>
