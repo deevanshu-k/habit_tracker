@@ -32,7 +32,6 @@ const ProfileDropDown: React.FC = () => {
                 </div>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content size="2">
-                <DropdownMenu.Item>Setting</DropdownMenu.Item>
                 <DropdownMenu.Item onClick={() => navigate("/today")}>
                     Todays todo
                 </DropdownMenu.Item>
