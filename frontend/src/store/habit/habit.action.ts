@@ -15,6 +15,9 @@ export const UPDATE_HABITLOG_FAIL = "habit/log/updateFail";
 export const FETCH_TODAY_HABITS = "habit/today/fetch";
 export const FETCH_TODAY_HABITS_SUCCESS = "habit/today/fetchSuccess";
 export const FETCH_TODAY_HABITS_FAIL = "habit/today/fetchFail";
+export const DELETE_HABIT = "habit/delete";
+export const DELETE_HABIT_SUCCESS = "habit/deleteSuccess";
+export const DELETE_HABIT_FAIL = "habit/deleteFail";
 
 // Fetch Habit Action
 export interface FetchHabitAction extends Action {
@@ -220,6 +223,52 @@ export const fetchTodayHabitsFailAction = (
     },
 });
 
+// Delete habit action
+export interface DeleteHabitAction extends Action {
+    type: typeof DELETE_HABIT;
+    payload: {
+        id: string;
+    };
+}
+export const deleteHabitAction = (id: string): DeleteHabitAction => ({
+    type: DELETE_HABIT,
+    payload: {
+        id,
+    },
+});
+
+// Delete habit success action
+export interface DeleteHabitSuccessAction extends Action {
+    type: typeof DELETE_HABIT_SUCCESS;
+    payload: {
+        id: string;
+    };
+}
+export const deleteHabitSuccessAction = (
+    id: string
+): DeleteHabitSuccessAction => ({
+    type: DELETE_HABIT_SUCCESS,
+    payload: {
+        id,
+    },
+});
+
+// Delete habit success action
+export interface DeleteHabitFailAction extends Action {
+    type: typeof DELETE_HABIT_FAIL;
+    payload: {
+        error: string;
+    };
+}
+export const deleteHabitFailAction = (
+    _error: string
+): DeleteHabitFailAction => ({
+    type: DELETE_HABIT_FAIL,
+    payload: {
+        error: _error,
+    },
+});
+
 // Actions
 export type HabitActions =
     | FetchHabitAction
@@ -233,4 +282,7 @@ export type HabitActions =
     | UpdateHabitLogFailAction
     | FetchTodayHabitsAction
     | FetchTodayHabitsSuccessAction
-    | FetchTodayHabitsFailAction;
+    | FetchTodayHabitsFailAction
+    | DeleteHabitAction
+    | DeleteHabitSuccessAction
+    | DeleteHabitFailAction;

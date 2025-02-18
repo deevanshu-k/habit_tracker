@@ -16,6 +16,9 @@ import {
     ADD_HABIT,
     addHabitFailAction,
     addHabitSuccessAction,
+    DELETE_HABIT,
+    deleteHabitFailAction,
+    deleteHabitSuccessAction,
     FETCH_HABIT,
     FETCH_TODAY_HABITS,
     fetchHabitFailAction,
@@ -157,6 +160,32 @@ export const getTodayHabitsEpic = (
                         of(
                             globalLoadingEndAction(),
                             fetchTodayHabitsFailAction(e.response.data.message)
+                        )
+                    )
+                )
+            )
+        )
+    );
+
+export const deleteHabitEpic = (
+    action$: Observable<any>
+): Observable<GlobalActions | HabitActions> =>
+    action$.pipe(
+        ofType(DELETE_HABIT),
+        switchMap((action) =>
+            concat(
+                of(globalLoadingStartAction()),
+                from(habitService.deleteHabit(action.payload.id)).pipe(
+                    mergeMap((data) =>
+                        of(
+                            globalLoadingEndAction(),
+                            deleteHabitSuccessAction(data.id)
+                        )
+                    ),
+                    catchError((e) =>
+                        of(
+                            globalLoadingEndAction(),
+                            deleteHabitFailAction(e.response.data.message)
                         )
                     )
                 )

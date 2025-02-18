@@ -1,9 +1,15 @@
 import { PlusIcon } from "@radix-ui/react-icons";
 import { Box, Button, Flex, Text } from "@radix-ui/themes";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Habit, StoreState } from "../../../../store/store.type";
 import AddHabit from "../../../../components/add-habbit/add-habit";
+import { Dispatch } from "redux";
+import {
+    deleteHabitAction,
+    DeleteHabitAction,
+} from "../../../../store/habit/habit.action";
+import ConfirmDialogBox from "../../../../components/confirm-dialog-box/confirm-dialog-box";
 
 const colorMap: Record<string, string> = {
     Gray: "bg-gray-500",
@@ -14,7 +20,13 @@ const colorMap: Record<string, string> = {
 };
 
 const HabitStickySideBar: React.FC = ({}) => {
+    const dispatch = useDispatch<Dispatch<DeleteHabitAction>>();
     const habits = useSelector<StoreState, Habit[]>((s) => s.habit.data);
+
+    const deleteHabit = (id: string) => {
+        dispatch(deleteHabitAction(id));
+    };
+
     return (
         <>
             <Text align="center" as="div" color="gray" className="p-4">
@@ -54,13 +66,21 @@ const HabitStickySideBar: React.FC = ({}) => {
                             >
                                 Edit
                             </Button>
-                            <Button
-                                className="w-[30%] cursor-pointer"
-                                variant="ghost"
-                                color="grass"
+                            <ConfirmDialogBox
+                                title="Are you sure?"
+                                onConfirm={() => deleteHabit(habit.id)}
+                                description={`Delete habit: ${habit.title}`}
+                                onCancel={() => {}}
+                                tooltip="delete habit"
                             >
-                                Delete
-                            </Button>
+                                <Button
+                                    className="w-[30%] cursor-pointer"
+                                    variant="ghost"
+                                    color="grass"
+                                >
+                                    Delete
+                                </Button>
+                            </ConfirmDialogBox>
                             <Button
                                 className="w-[30%] cursor-pointer"
                                 variant="ghost"

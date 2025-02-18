@@ -2,6 +2,7 @@ import { combineEpics } from "redux-observable";
 import { fetchUserEpic, logoutUserEpic } from "./user/user.epic";
 import {
     addHabitEpic,
+    deleteHabitEpic,
     getHabitsEpic,
     getTodayHabitsEpic,
     updateHabitLogEpic,
@@ -23,5 +24,6 @@ export const rootEpic = combineEpics<any>(
     getTodayTodosEpic,
     addTodosEpic,
     updateTodosEpic,
-    deleteTodosEpic
+    deleteTodosEpic,
+    deleteHabitEpic
 );

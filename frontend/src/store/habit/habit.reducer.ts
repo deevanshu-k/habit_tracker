@@ -1,6 +1,7 @@
 import { Habit, HabitState } from "../store.type";
 import {
     ADD_HABIT_SUCCESS,
+    DELETE_HABIT_SUCCESS,
     FETCH_HABIT_FAIL,
     FETCH_HABIT_SUCCESS,
     FETCH_TODAY_HABITS,
@@ -64,6 +65,7 @@ export const habitReducer = (
                                   description: newHabit.description,
                                   color: newHabit.color,
                                   is_done: false,
+                                  note: "",
                               },
                           ],
                       }
@@ -103,6 +105,17 @@ export const habitReducer = (
                           ),
                       }
                     : { ...state.today },
+            };
+        case DELETE_HABIT_SUCCESS:
+            return {
+                ...state,
+                data: state.data.filter((h) => h.id !== action.payload.id),
+                today: {
+                    ...state.today,
+                    data: state.today.data.filter(
+                        (h) => h.id !== action.payload.id
+                    ),
+                },
             };
         default:
             return { ...state };

@@ -25,6 +25,10 @@ export interface GetTodayHabitsResponse {
     note: string;
 }
 
+export interface DeleteHabitResponse {
+    id: string;
+}
+
 const habitService = {
     getHabits: async (month: number, year: number): Promise<Habit[]> => {
         const res = await axiosInstance.get(
@@ -67,6 +71,10 @@ const habitService = {
             is_done,
             note,
         });
+        return res.data.data;
+    },
+    deleteHabit: async (id: string): Promise<DeleteHabitResponse> => {
+        const res = await axiosInstance.delete(`/api/habit/${id}`);
         return res.data.data;
     },
 };
