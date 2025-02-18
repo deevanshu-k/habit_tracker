@@ -5,6 +5,14 @@ import { useSelector } from "react-redux";
 import { Habit, StoreState } from "../../../../store/store.type";
 import AddHabit from "../../../../components/add-habbit/add-habit";
 
+const colorMap: Record<string, string> = {
+    Gray: "bg-gray-500",
+    Red: "bg-red-500",
+    Green: "bg-green-500",
+    Pink: "bg-pink-500",
+    Sky: "bg-sky-500",
+};
+
 const HabitStickySideBar: React.FC = ({}) => {
     const habits = useSelector<StoreState, Habit[]>((s) => s.habit.data);
     return (
@@ -19,9 +27,16 @@ const HabitStickySideBar: React.FC = ({}) => {
                         className="w-full relative group shadow-[var(--grass-2)] shadow-sm"
                     >
                         <div className="flex flex-row justify-between p-3 shadow-lg">
-                            <Text as="div" color="gray">
-                                {habit.title}
-                            </Text>
+                            <Flex direction="row" align={"center"}>
+                                <div
+                                    className={`w-[10px] h-[10px] rounded-full mr-2 ${
+                                        colorMap[habit.color]
+                                    }`}
+                                ></div>
+                                <Text as="div" color="gray">
+                                    {habit.title}
+                                </Text>
+                            </Flex>
                             <Text>
                                 {habit.logs.reduce(
                                     (p, h) => p + Number(h.is_done),
