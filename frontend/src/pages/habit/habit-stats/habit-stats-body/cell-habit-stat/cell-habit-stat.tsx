@@ -13,6 +13,7 @@ import {
     updateHabitLogAction,
     UpdateHabitLogAction,
 } from "../../../../../store/habit/habit.action";
+import { CheckIcon } from "@radix-ui/react-icons";
 
 const HabitCheckBox: React.FC<{
     id: string;
@@ -46,7 +47,9 @@ const CellHabitStat: React.FC<{
     year: number;
 }> = ({ habits, date, month, year }) => {
     const dispatcher = useDispatch<Dispatch<UpdateHabitLogAction>>();
-
+    const completed = habits.filter((h) => h.is_done).length;
+    const total = habits.length;
+    const percentage = total > 0 ? (completed / total) * 100 : 0;
     const updateHabitLog = (_id: string, _is_done: boolean, _note: string) => {
         dispatcher(
             updateHabitLogAction(_id, date, month, year, _is_done, _note)
@@ -55,12 +58,22 @@ const CellHabitStat: React.FC<{
     return (
         <HoverCard.Root>
             <HoverCard.Trigger>
-                <Box className="border flex justify-center items-center rounded-full w-[40px] aspect-square cursor-pointer">
-                    <Text>
-                        {habits.reduce((p, h) => p + (h.is_done ? 1 : 0), 0) +
-                            "/" +
-                            habits.length}
-                    </Text>
+                <Box
+                    className="border flex justify-center items-center rounded-full w-[40px] aspect-square cursor-pointer"
+                    style={{
+                        background:
+                            completed !== total
+                                ? `conic-gradient(var(--accent-10) ${percentage}%, transparent ${percentage}% 100%)`
+                                : "",
+                    }}
+                >
+                    {completed === total ? (
+                        <Text size={"7"}>
+                            <CheckIcon className="w-[20px] h-[20px]" />
+                        </Text>
+                    ) : (
+                        <Text size={"2"}>{completed + "/" + total}</Text>
+                    )}
                 </Box>
             </HoverCard.Trigger>
             <HoverCard.Content size={"1"}>
