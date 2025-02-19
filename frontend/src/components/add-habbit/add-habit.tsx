@@ -110,13 +110,11 @@ const AddHabit: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                                             onValueChange={(v) => {
                                                 if (
                                                     v.length == 5 &&
-                                                    [
-                                                        "1",
-                                                        "2",
-                                                        "3",
-                                                        "4",
-                                                        "5",
-                                                    ].map((t) => v.includes(t))
+                                                    !["1", "2", "3", "4", "5"]
+                                                        .map((t) =>
+                                                            v.includes(t)
+                                                        )
+                                                        .includes(false)
                                                 ) {
                                                     setValue("selection", "1");
                                                 } else if (
