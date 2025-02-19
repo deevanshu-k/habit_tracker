@@ -110,23 +110,26 @@ export const getTodayHabits = {
                 return;
             }
 
+            const now = new Date();
             // Get all habits
-            const habits = await db.habit.findMany({
-                where: {
-                    userId: req.user.id,
-                    is_archived: false,
-                    is_deleted: false,
-                },
-                select: {
-                    id: true,
-                    title: true,
-                    description: true,
-                    color: true,
-                },
-            });
+            const habits = (
+                await db.habit.findMany({
+                    where: {
+                        userId: req.user.id,
+                        is_archived: false,
+                        is_deleted: false,
+                    },
+                    select: {
+                        id: true,
+                        title: true,
+                        description: true,
+                        color: true,
+                        frequency: true,
+                    },
+                })
+            ).filter((h) => h.frequency[now.getDay()] == "1");
 
             // Get todays logs for habits
-            const now = new Date();
             const logs = await db.habitLog.findMany({
                 where: {
                     habitId: { in: habits.map((h) => h.id) },
