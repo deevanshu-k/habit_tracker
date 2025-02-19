@@ -3,11 +3,14 @@ import { getCalendarGrid, MONTH } from "../../../../utils/date.utils";
 import { Box, Grid, Text } from "@radix-ui/themes";
 import { useHabitDayWise } from "../../../../hooks/use-habit-day-wise";
 import CellHabitStat from "./cell-habit-stat/cell-habit-stat";
+import { Habit } from "../../../../store/store.type";
+import { colorMap } from "../../../../utils/color.utils";
 
 const HabitStatsBody: React.FC<{
     month: MONTH;
     year: number;
-}> = ({ month, year }) => {
+    selectedhabit: Habit | undefined;
+}> = ({ month, year, selectedhabit }) => {
     const dayToHabitsMap = useHabitDayWise(month, year);
     let grid: (number | null)[][] = getCalendarGrid(year, month - 1);
 
@@ -29,33 +32,41 @@ const HabitStatsBody: React.FC<{
             {/* Calendar Days */}
             {grid.map((r, rowIndex) => (
                 <Grid key={rowIndex} columns="7">
-                    {r.map((c, colIndex) => (
-                        <Box
-                            key={colIndex}
-                            className={`p-4 relative flex justify-center items-center aspect-square text-center border-r-2 border-b-2 border-[var(--gray-7)] last:border-r-0`}
-                            style={{
-                                borderBottom:
-                                    rowIndex === grid.length - 1 ? 0 : "",
-                            }}
-                        >
-                            <Text
-                                className="absolute right-0 top-0 p-2"
-                                color="gray"
+                    {r.map((c, colIndex) => {
+                        const habits = c ? dayToHabitsMap.get(c) || [] : [];
+                        const sh = habits.find(
+                            (_h) => _h.id === selectedhabit?.id
+                        );
+                        return (
+                            <Box
+                                key={colIndex}
+                                className={`p-4 relative flex justify-center items-center aspect-square text-center border-r-2 border-b-2 border-[var(--gray-7)] last:border-r-0 ${
+                                    sh && sh.is_done ? colorMap[sh.color] : ""
+                                }`}
+                                style={{
+                                    borderBottom:
+                                        rowIndex === grid.length - 1 ? 0 : "",
+                                }}
                             >
-                                {c}
-                            </Text>
-                            {c ? (
-                                <CellHabitStat
-                                    date={c}
-                                    month={month}
-                                    year={year}
-                                    habits={dayToHabitsMap.get(c) || []}
-                                />
-                            ) : (
-                                ""
-                            )}
-                        </Box>
-                    ))}
+                                <Text
+                                    className="absolute right-0 top-0 p-2"
+                                    color="gray"
+                                >
+                                    {c}
+                                </Text>
+                                {c &&
+                                    (!selectedhabit ||
+                                        (sh && habits.includes(sh))) && (
+                                        <CellHabitStat
+                                            date={c}
+                                            month={month}
+                                            year={year}
+                                            habits={habits}
+                                        />
+                                    )}
+                            </Box>
+                        );
+                    })}
                 </Grid>
             ))}
         </Box>
