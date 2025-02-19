@@ -44,7 +44,7 @@ const habitService = {
         title: string,
         description: string,
         f_type: HabitFreqType,
-        f: number,
+        f: number | string,
         color: string
     ): Promise<AddHabitResponse> => {
         const res = await axiosInstance.post(`/api/habit`, {

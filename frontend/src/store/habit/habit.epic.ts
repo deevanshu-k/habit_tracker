@@ -78,7 +78,7 @@ export const addHabitEpic = (
                         action.payload.title,
                         action.payload.description,
                         HabitFreqType.FIXED_DAYS,
-                        1111111,
+                        action.payload.f,
                         action.payload.color
                     )
                 ).pipe(

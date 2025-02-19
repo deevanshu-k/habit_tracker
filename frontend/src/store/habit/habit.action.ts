@@ -75,18 +75,21 @@ export interface AddHabitAction extends Action {
         title: string;
         description: string;
         color: string;
+        f: number | string;
     };
 }
 export const addHabitAction = (
     _title: string,
     _description: string,
-    _color: string
+    _color: string,
+    _f: number | string
 ): AddHabitAction => ({
     type: ADD_HABIT,
     payload: {
         title: _title,
         description: _description,
         color: _color,
+        f: _f,
     },
 });
 

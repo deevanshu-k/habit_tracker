@@ -1,42 +1,56 @@
 import {
+    Box,
     Button,
+    CheckboxCards,
     Dialog,
     Flex,
+    RadioCards,
     Select,
     Text,
     TextArea,
     TextField,
 } from "@radix-ui/themes";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { addHabitAction, AddHabitAction } from "../../store/habit/habit.action";
 
 const AddHabit: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const { register, setValue, handleSubmit } = useForm<{
+    const dispatch = useDispatch<Dispatch<AddHabitAction>>();
+    const { register, setValue, handleSubmit, control, watch } = useForm<{
         title: string;
         description: string;
         color: string;
-    }>({ defaultValues: { color: "Green" } });
-    const dispatch = useDispatch<Dispatch<AddHabitAction>>();
+        weeklyFrequency: string[];
+        selection: string;
+    }>({
+        defaultValues: { color: "Green", weeklyFrequency: [], selection: "" },
+    });
 
     const onAddSumbmit = (data: {
         title: string;
         description: string;
         color: string;
     }) => {
-        dispatch(addHabitAction(data.title, data.description, data.color));
+        let freq = "";
+        const wfreq = watch().weeklyFrequency;
+        ["1", "2", "3", "4", "5", "6", "7"].forEach((t) => {
+            freq = freq + String(Number(wfreq.includes(t)));
+        });
+        dispatch(
+            addHabitAction(data.title, data.description, data.color, freq)
+        );
     };
 
     return (
         <Dialog.Root>
             <Dialog.Trigger>{children}</Dialog.Trigger>
-            <Dialog.Content maxWidth="450px">
+            <Dialog.Content maxWidth="600px">
                 <Dialog.Title align={"center"}>Add Habit</Dialog.Title>
 
                 <form onSubmit={handleSubmit(onAddSumbmit)}>
-                    <Flex direction="column" gap="3">
+                    <Flex direction="column" gap="4">
                         <label>
                             <Text as="div" size="2" mb="1" weight="bold">
                                 Title
@@ -80,6 +94,125 @@ const AddHabit: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                                     ))}
                                 </Select.Content>
                             </Select.Root>
+                        </label>
+                        <label>
+                            <Text as="div" size="2" mb="1" weight="bold">
+                                Weekly Frequency
+                            </Text>
+                            <Box>
+                                <Controller
+                                    name="weeklyFrequency"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <CheckboxCards.Root
+                                            columns={{ initial: "1", sm: "4" }}
+                                            value={field.value}
+                                            onValueChange={(v) => {
+                                                if (
+                                                    v.length == 5 &&
+                                                    [
+                                                        "1",
+                                                        "2",
+                                                        "3",
+                                                        "4",
+                                                        "5",
+                                                    ].map((t) => v.includes(t))
+                                                ) {
+                                                    setValue("selection", "1");
+                                                } else if (
+                                                    v.length == 7 &&
+                                                    [
+                                                        "1",
+                                                        "2",
+                                                        "3",
+                                                        "4",
+                                                        "5",
+                                                        "6",
+                                                        "7",
+                                                    ].map((t) => v.includes(t))
+                                                ) {
+                                                    setValue("selection", "2");
+                                                } else {
+                                                    setValue("selection", "");
+                                                }
+                                                field.onChange(v);
+                                            }}
+                                        >
+                                            <CheckboxCards.Item value="1">
+                                                <Text weight="bold">Mon</Text>
+                                            </CheckboxCards.Item>
+                                            <CheckboxCards.Item value="2">
+                                                <Text weight="bold">Tue</Text>
+                                            </CheckboxCards.Item>
+                                            <CheckboxCards.Item value="3">
+                                                <Text weight="bold">Wed</Text>
+                                            </CheckboxCards.Item>
+                                            <CheckboxCards.Item value="4">
+                                                <Text weight="bold">Thu</Text>
+                                            </CheckboxCards.Item>
+                                            <CheckboxCards.Item value="5">
+                                                <Text weight="bold">Fri</Text>
+                                            </CheckboxCards.Item>
+                                            <CheckboxCards.Item value="6">
+                                                <Text weight="bold">Sat</Text>
+                                            </CheckboxCards.Item>
+                                            <CheckboxCards.Item value="7">
+                                                <Text weight="bold">Sun</Text>
+                                            </CheckboxCards.Item>
+                                        </CheckboxCards.Root>
+                                    )}
+                                />
+                            </Box>
+                            <Box mt="4">
+                                <Controller
+                                    name="selection"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <RadioCards.Root
+                                            value={field.value}
+                                            onValueChange={(v) => {
+                                                if (v == "1") {
+                                                    setValue(
+                                                        "weeklyFrequency",
+                                                        [
+                                                            "1",
+                                                            "2",
+                                                            "3",
+                                                            "4",
+                                                            "5",
+                                                        ]
+                                                    );
+                                                } else if (v == "2") {
+                                                    setValue(
+                                                        "weeklyFrequency",
+                                                        [
+                                                            "1",
+                                                            "2",
+                                                            "3",
+                                                            "4",
+                                                            "5",
+                                                            "6",
+                                                            "7",
+                                                        ]
+                                                    );
+                                                }
+                                                field.onChange(v);
+                                            }}
+                                        >
+                                            <RadioCards.Item value="1">
+                                                <Text weight="bold">
+                                                    Week days
+                                                </Text>
+                                            </RadioCards.Item>
+                                            <RadioCards.Item value="2">
+                                                <Text weight="bold">
+                                                    Every day
+                                                </Text>
+                                            </RadioCards.Item>
+                                        </RadioCards.Root>
+                                    )}
+                                />
+                            </Box>
                         </label>
                     </Flex>
                     <Flex gap="3" mt="4" justify="end">
