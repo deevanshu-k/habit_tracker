@@ -8,7 +8,7 @@ import {
     UNAUTHORIZED_REQUEST,
 } from "../utils/message.util";
 import db from "../services/db.service";
-import { Color, FrequencyType, HabitLog } from "@prisma/client";
+import { FrequencyType } from "@prisma/client";
 
 export const createHabit = {
     validator: celebrate({
@@ -69,7 +69,7 @@ export const createHabit = {
                             : f_type === FrequencyType.NO_OF_DAYS_IN_MONTHS
                             ? FrequencyType.NO_OF_DAYS_IN_MONTHS
                             : FrequencyType.NO_OF_DAYS_IN_WEEKS,
-                    frequency: Number(f),
+                    frequency: String(f),
                     color: color,
                     userId: req.user.id,
                 },

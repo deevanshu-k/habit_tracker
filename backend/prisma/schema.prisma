@@ -32,7 +32,7 @@ model Habit {
   description    String
   color          Color         @default(Brown)
   logs           HabitLog[]
-  frequency      Int /* fixedDays(1101101) , weekDays(1-7), monthDays(1-30) */
+  frequency      String /* fixedDays(1101101) , weekDays(1-7), monthDays(1-30) */
   frequency_type FrequencyType
   is_archived    Boolean       @default(false)
   is_deleted     Boolean       @default(false)
