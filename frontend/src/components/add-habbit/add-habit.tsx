@@ -18,15 +18,20 @@ import { addHabitAction, AddHabitAction } from "../../store/habit/habit.action";
 
 const AddHabit: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const dispatch = useDispatch<Dispatch<AddHabitAction>>();
-    const { register, setValue, handleSubmit, control, watch } = useForm<{
-        title: string;
-        description: string;
-        color: string;
-        weeklyFrequency: string[];
-        selection: string;
-    }>({
-        defaultValues: { color: "Green", weeklyFrequency: [], selection: "" },
-    });
+    const { register, setValue, handleSubmit, control, watch, reset } =
+        useForm<{
+            title: string;
+            description: string;
+            color: string;
+            weeklyFrequency: string[];
+            selection: string;
+        }>({
+            defaultValues: {
+                color: "Green",
+                weeklyFrequency: [],
+                selection: "",
+            },
+        });
 
     const onAddSumbmit = (data: {
         title: string;
@@ -137,25 +142,39 @@ const AddHabit: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                                             }}
                                         >
                                             <CheckboxCards.Item value="1">
-                                                <Text weight="bold">Sun</Text>
+                                                <Text weight="bold">
+                                                    Sunday
+                                                </Text>
                                             </CheckboxCards.Item>
                                             <CheckboxCards.Item value="2">
-                                                <Text weight="bold">Mon</Text>
+                                                <Text weight="bold">
+                                                    Monday
+                                                </Text>
                                             </CheckboxCards.Item>
                                             <CheckboxCards.Item value="3">
-                                                <Text weight="bold">Tue</Text>
+                                                <Text weight="bold">
+                                                    Tuesday
+                                                </Text>
                                             </CheckboxCards.Item>
                                             <CheckboxCards.Item value="4">
-                                                <Text weight="bold">Wed</Text>
+                                                <Text weight="bold">
+                                                    Wednesday
+                                                </Text>
                                             </CheckboxCards.Item>
                                             <CheckboxCards.Item value="5">
-                                                <Text weight="bold">Thu</Text>
+                                                <Text weight="bold">
+                                                    Thursday
+                                                </Text>
                                             </CheckboxCards.Item>
                                             <CheckboxCards.Item value="6">
-                                                <Text weight="bold">Fri</Text>
+                                                <Text weight="bold">
+                                                    Friday
+                                                </Text>
                                             </CheckboxCards.Item>
                                             <CheckboxCards.Item value="7">
-                                                <Text weight="bold">Sat</Text>
+                                                <Text weight="bold">
+                                                    Saturday
+                                                </Text>
                                             </CheckboxCards.Item>
                                         </CheckboxCards.Root>
                                     )}
@@ -215,7 +234,11 @@ const AddHabit: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     </Flex>
                     <Flex gap="3" mt="4" justify="end">
                         <Dialog.Close>
-                            <Button variant="soft" color="gray">
+                            <Button
+                                variant="soft"
+                                color="gray"
+                                onClick={() => reset()}
+                            >
                                 Cancel
                             </Button>
                         </Dialog.Close>
