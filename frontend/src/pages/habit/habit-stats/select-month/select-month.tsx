@@ -21,7 +21,10 @@ const SelectMonth: React.FC<{
             <Button
                 size={"1"}
                 variant="ghost"
-                disabled={now.getMonth() + 1 <= month}
+                disabled={
+                    now.getFullYear() < year ||
+                    (now.getFullYear() === year && now.getMonth() + 1 <= month)
+                }
                 onClick={goToNextMonth}
             >
                 <ChevronRightIcon />
