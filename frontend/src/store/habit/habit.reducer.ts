@@ -1,4 +1,4 @@
-import { Habit, HabitState } from "../store.type";
+import { Habit, HabitFreqType, HabitState } from "../store.type";
 import {
     ADD_HABIT_SUCCESS,
     DELETE_HABIT_SUCCESS,
@@ -57,17 +57,22 @@ export const habitReducer = (
                 today: state.today.isAlreadyFetched
                     ? {
                           ...state.today,
-                          data: [
-                              ...state.today.data,
-                              {
-                                  id: newHabit.id,
-                                  title: newHabit.title,
-                                  description: newHabit.description,
-                                  color: newHabit.color,
-                                  is_done: false,
-                                  note: "",
-                              },
-                          ],
+                          data:
+                              newHabit.frequency_type ===
+                                  HabitFreqType.FIXED_DAYS &&
+                              newHabit.frequency[new Date().getDay()] === "1"
+                                  ? [
+                                        ...state.today.data,
+                                        {
+                                            id: newHabit.id,
+                                            title: newHabit.title,
+                                            description: newHabit.description,
+                                            color: newHabit.color,
+                                            is_done: false,
+                                            note: "",
+                                        },
+                                    ]
+                                  : [...state.today.data],
                       }
                     : { ...state.today },
             };

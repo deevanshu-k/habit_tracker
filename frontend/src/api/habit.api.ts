@@ -6,7 +6,7 @@ export interface AddHabitResponse {
     title: string;
     description: string;
     frequency_type: HabitFreqType;
-    frequency: number;
+    frequency: string;
     color: string;
 }
 
