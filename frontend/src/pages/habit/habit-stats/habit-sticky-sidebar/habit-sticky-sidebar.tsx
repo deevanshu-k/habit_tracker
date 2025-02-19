@@ -2,7 +2,7 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { Box, Button, Flex, Text } from "@radix-ui/themes";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Habit, StoreState } from "../../../../store/store.type";
+import { Habit, HabitFreqType, StoreState } from "../../../../store/store.type";
 import AddHabit from "../../../../components/add-habbit/add-habit";
 import { Dispatch } from "redux";
 import {
@@ -10,6 +10,7 @@ import {
     DeleteHabitAction,
 } from "../../../../store/habit/habit.action";
 import ConfirmDialogBox from "../../../../components/confirm-dialog-box/confirm-dialog-box";
+import { countMatchingDays, MONTH } from "../../../../utils/date.utils";
 
 const colorMap: Record<string, string> = {
     Gray: "bg-gray-500",
@@ -19,7 +20,10 @@ const colorMap: Record<string, string> = {
     Sky: "bg-sky-500",
 };
 
-const HabitStickySideBar: React.FC = ({}) => {
+const HabitStickySideBar: React.FC<{ month: MONTH; year: number }> = ({
+    month,
+    year,
+}) => {
     const dispatch = useDispatch<Dispatch<DeleteHabitAction>>();
     const habits = useSelector<StoreState, Habit[]>((s) => s.habit.data);
 
@@ -55,7 +59,14 @@ const HabitStickySideBar: React.FC = ({}) => {
                                     0
                                 ) +
                                     "/" +
-                                    "10"}
+                                    (habit.frequency_type ===
+                                    HabitFreqType.FIXED_DAYS
+                                        ? countMatchingDays(
+                                              year,
+                                              month,
+                                              habit.frequency
+                                          )
+                                        : habit.frequency)}
                             </Text>
                         </div>
                         <div className="absolute top-0 hidden group-hover:flex flex-row transition-all duration-300 justify-evenly items-center w-full h-full p-2 bg-[var(--gray-2)]">

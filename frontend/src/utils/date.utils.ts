@@ -79,3 +79,20 @@ export const getCalendarGrid = (
 
     return grid;
 };
+
+export const countMatchingDays = (
+    year: number,
+    month: MONTH,
+    pattern: string
+): number => {
+    let count = 0;
+    const daysInMonth = new Date(year, month, 0).getDate(); // Get last day of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+        const weekDay = new Date(year, month - 1, day).getDay(); // Get day index (0 = Sun, ..., 6 = Sat)
+        if (pattern[weekDay] === "1") {
+            count++;
+        }
+    }
+
+    return count;
+};

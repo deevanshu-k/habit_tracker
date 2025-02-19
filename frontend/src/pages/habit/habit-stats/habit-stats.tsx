@@ -55,7 +55,7 @@ const HabitStats: React.FC = () => {
             </div>
             {/* Sticky Sidebar */}
             <div className="w-full lg:w-[400px] lg:self-start lg:sticky lg:top-10 p-4 border-2 border-[var(--gray-7)]">
-                <HabitStickySideBar />
+                <HabitStickySideBar month={month} year={year} />
             </div>
         </Flex>
     );
