@@ -24,7 +24,7 @@ export interface Habit {
     title: string;
     description: string;
     color: string;
-    frequency: number;
+    frequency: string;
     frequency_type: HabitFreqType;
     is_archived: boolean;
     is_deleted: boolean;

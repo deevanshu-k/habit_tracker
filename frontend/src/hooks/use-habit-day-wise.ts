@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
-import { Habit, StoreState } from "../store/store.type";
+import { Habit, HabitFreqType, StoreState } from "../store/store.type";
+import { MONTH } from "../utils/date.utils";
 
 interface HabitReturnType {
     id: string;
@@ -10,12 +11,22 @@ interface HabitReturnType {
     note: string;
 }
 
-export const useHabitDayWise = ({}): Map<number, HabitReturnType[]> => {
+export const useHabitDayWise = (
+    month: MONTH,
+    year: number
+): Map<number, HabitReturnType[]> => {
     const habits = useSelector<StoreState, Habit[]>((s) => s.habit.data);
     let map = new Map<number, HabitReturnType[]>();
 
     habits.forEach((habit) => {
         habit.logs.forEach((log) => {
+            const dayIndex = new Date(year, month - 1, log.date).getDay(); // month is 0-based
+            if (
+                habit.frequency_type == HabitFreqType.FIXED_DAYS &&
+                habit.frequency[dayIndex] == "0"
+            ) {
+                return;
+            }
             const habitData: HabitReturnType = {
                 id: habit.id,
                 title: habit.title,
@@ -24,7 +35,6 @@ export const useHabitDayWise = ({}): Map<number, HabitReturnType[]> => {
                 is_done: log.is_done,
                 note: log.note,
             };
-
             map.set(log.date, [...(map.get(log.date) || []), habitData]);
         });
     });

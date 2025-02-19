@@ -8,7 +8,7 @@ const HabitStatsBody: React.FC<{
     month: MONTH;
     year: number;
 }> = ({ month, year }) => {
-    const dayToHabitsMap = useHabitDayWise({});
+    const dayToHabitsMap = useHabitDayWise(month, year);
     let grid: (number | null)[][] = getCalendarGrid(year, month - 1);
 
     return (

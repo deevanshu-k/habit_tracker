@@ -110,7 +110,7 @@ const AddHabit: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                                             onValueChange={(v) => {
                                                 if (
                                                     v.length == 5 &&
-                                                    !["1", "2", "3", "4", "5"]
+                                                    !["2", "3", "4", "5", "6"]
                                                         .map((t) =>
                                                             v.includes(t)
                                                         )
@@ -137,25 +137,25 @@ const AddHabit: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                                             }}
                                         >
                                             <CheckboxCards.Item value="1">
-                                                <Text weight="bold">Mon</Text>
+                                                <Text weight="bold">Sun</Text>
                                             </CheckboxCards.Item>
                                             <CheckboxCards.Item value="2">
-                                                <Text weight="bold">Tue</Text>
+                                                <Text weight="bold">Mon</Text>
                                             </CheckboxCards.Item>
                                             <CheckboxCards.Item value="3">
-                                                <Text weight="bold">Wed</Text>
+                                                <Text weight="bold">Tue</Text>
                                             </CheckboxCards.Item>
                                             <CheckboxCards.Item value="4">
-                                                <Text weight="bold">Thu</Text>
+                                                <Text weight="bold">Wed</Text>
                                             </CheckboxCards.Item>
                                             <CheckboxCards.Item value="5">
-                                                <Text weight="bold">Fri</Text>
+                                                <Text weight="bold">Thu</Text>
                                             </CheckboxCards.Item>
                                             <CheckboxCards.Item value="6">
-                                                <Text weight="bold">Sat</Text>
+                                                <Text weight="bold">Fri</Text>
                                             </CheckboxCards.Item>
                                             <CheckboxCards.Item value="7">
-                                                <Text weight="bold">Sun</Text>
+                                                <Text weight="bold">Sat</Text>
                                             </CheckboxCards.Item>
                                         </CheckboxCards.Root>
                                     )}
@@ -173,11 +173,11 @@ const AddHabit: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                                                     setValue(
                                                         "weeklyFrequency",
                                                         [
-                                                            "1",
                                                             "2",
                                                             "3",
                                                             "4",
                                                             "5",
+                                                            "6",
                                                         ]
                                                     );
                                                 } else if (v == "2") {
