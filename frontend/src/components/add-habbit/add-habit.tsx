@@ -46,6 +46,7 @@ const AddHabit: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         dispatch(
             addHabitAction(data.title, data.description, data.color, freq)
         );
+        reset();
     };
 
     return (
