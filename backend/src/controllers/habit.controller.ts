@@ -245,9 +245,102 @@ export const getHabits = {
 };
 export const updateHabit = {
     validator: celebrate({
-        body: {},
+        body: Joi.object({
+            title: Joi.string().required(),
+            description: Joi.string().allow(""),
+            color: Joi.string().optional(),
+            f_type: Joi.string()
+                .valid(
+                    "FIXED_DAYS",
+                    "NO_OF_DAYS_IN_WEEKS",
+                    "NO_OF_DAYS_IN_MONTHS"
+                )
+                .required(),
+            f: Joi.alternatives()
+                .conditional("f_type", [
+                    {
+                        is: "FIXED_DAYS",
+                        then: Joi.string()
+                            .length(7)
+                            .pattern(/^[01]{7}$/)
+                            .required(),
+                    },
+                    {
+                        is: "NO_OF_DAYS_IN_WEEKS",
+                        then: Joi.string()
+                            .length(1)
+                            .pattern(/^[1-7]$/)
+                            .required(),
+                    },
+                    {
+                        is: "NO_OF_DAYS_IN_MONTHS",
+                        then: Joi.string()
+                            .pattern(/^([1-9]|[12][0-9]|30)$/) // Matches numbers 1-30
+                            .required(),
+                    },
+                ])
+                .required(),
+            is_archived: Joi.boolean().required(),
+        }),
+        params: Joi.object({
+            id: Joi.string().required(),
+        }),
     }),
-    controller: async (req: Request, res: Response) => {},
+    controller: async (req: AuthenticatedRequest, res: Response) => {
+        try {
+            if (!req.user) {
+                res.json({
+                    code: 401,
+                    message: UNAUTHORIZED_REQUEST,
+                });
+                return;
+            }
+
+            // Update habit
+            const { id } = req.params;
+            const { title, description, color, f_type, f, is_archived } =
+                req.body;
+            const habit = await db.habit.update({
+                where: {
+                    id: id,
+                    userId: req.user.id,
+                },
+                data: {
+                    title: String(title),
+                    description: String(description),
+                    frequency_type:
+                        f_type === FrequencyType.FIXED_DAYS
+                            ? FrequencyType.FIXED_DAYS
+                            : f_type === FrequencyType.NO_OF_DAYS_IN_MONTHS
+                            ? FrequencyType.NO_OF_DAYS_IN_MONTHS
+                            : FrequencyType.NO_OF_DAYS_IN_WEEKS,
+                    frequency: String(f),
+                    color: color,
+                    is_archived: Boolean(is_archived),
+                },
+                select: {
+                    id: true,
+                    title: true,
+                    description: true,
+                    frequency_type: true,
+                    frequency: true,
+                    color: true,
+                    is_archived: true,
+                },
+            });
+
+            res.status(200).json({
+                code: 200,
+                message: SUCCESS,
+                data: habit,
+            });
+        } catch (error) {
+            res.status(500).json({
+                code: 500,
+                message: SOMETHING_WENT_WRONG,
+            });
+        }
+    },
 };
 export const deleteHabit = {
     validator: celebrate({
