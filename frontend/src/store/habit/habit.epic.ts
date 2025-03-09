@@ -26,9 +26,12 @@ import {
     fetchTodayHabitsFailAction,
     fetchTodayHabitsSuccessAction,
     HabitActions,
+    UPDATE_HABIT,
     UPDATE_HABITLOG,
+    updateHabitFailAction,
     updateHabitLogFailAction,
     updateHabitLogSuccessAction,
+    updateHabitSuccessAction,
 } from "./habit.action";
 import { ofType } from "redux-observable";
 import habitService from "../../api/habit.api";
@@ -186,6 +189,42 @@ export const deleteHabitEpic = (
                         of(
                             globalLoadingEndAction(),
                             deleteHabitFailAction(e.response.data.message)
+                        )
+                    )
+                )
+            )
+        )
+    );
+
+export const updateHabitEpic = (
+    action$: Observable<any>
+): Observable<GlobalActions | HabitActions> =>
+    action$.pipe(
+        ofType(UPDATE_HABIT),
+        switchMap((action) =>
+            concat(
+                of(globalLoadingStartAction()),
+                from(
+                    habitService.updateHabit(
+                        action.payload.id,
+                        action.payload.title,
+                        action.payload.description,
+                        action.payload.color,
+                        action.payload.f_type,
+                        action.payload.f,
+                        action.payload.is_archived
+                    )
+                ).pipe(
+                    mergeMap((data) =>
+                        of(
+                            globalLoadingEndAction(),
+                            updateHabitSuccessAction(data)
+                        )
+                    ),
+                    catchError((e) =>
+                        of(
+                            globalLoadingEndAction(),
+                            updateHabitFailAction(e.response.data.message)
                         )
                     )
                 )

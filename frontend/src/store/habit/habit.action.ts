@@ -1,6 +1,6 @@
 import { Action } from "redux";
-import { Habit, TodayHabit } from "../store.type";
-import { AddHabitResponse } from "../../api/habit.api";
+import { Habit, HabitFreqType, TodayHabit } from "../store.type";
+import { AddHabitResponse, UpdateHabitResponse } from "../../api/habit.api";
 
 // Action types
 export const FETCH_HABIT = "habit/fetch";
@@ -18,6 +18,9 @@ export const FETCH_TODAY_HABITS_FAIL = "habit/today/fetchFail";
 export const DELETE_HABIT = "habit/delete";
 export const DELETE_HABIT_SUCCESS = "habit/deleteSuccess";
 export const DELETE_HABIT_FAIL = "habit/deleteFail";
+export const UPDATE_HABIT = "habit/update";
+export const UPDATE_HABIT_SUCCESS = "habit/updateSuccess";
+export const UPDATE_HABIT_FAIL = "habit/updateFail";
 
 // Fetch Habit Action
 export interface FetchHabitAction extends Action {
@@ -256,7 +259,7 @@ export const deleteHabitSuccessAction = (
     },
 });
 
-// Delete habit success action
+// Delete habit fail action
 export interface DeleteHabitFailAction extends Action {
     type: typeof DELETE_HABIT_FAIL;
     payload: {
@@ -267,6 +270,68 @@ export const deleteHabitFailAction = (
     _error: string
 ): DeleteHabitFailAction => ({
     type: DELETE_HABIT_FAIL,
+    payload: {
+        error: _error,
+    },
+});
+
+// Update habit action
+export interface UpdateHabitAction extends Action {
+    type: typeof UPDATE_HABIT;
+    payload: {
+        id: string;
+        title: string;
+        description: string;
+        color: string;
+        f_type: HabitFreqType;
+        f: number | string;
+        is_archived: boolean;
+    };
+}
+export const updateHabitAction = (
+    _id: string,
+    _title: string,
+    _description: string,
+    _color: string,
+    _f_type: HabitFreqType,
+    _f: number | string,
+    _is_archived: boolean
+): UpdateHabitAction => ({
+    type: UPDATE_HABIT,
+    payload: {
+        id: _id,
+        title: _title,
+        description: _description,
+        color: _color,
+        f_type: _f_type,
+        f: _f,
+        is_archived: _is_archived,
+    },
+});
+
+// Update habit success action
+export interface UpdateHabitSuccessAction extends Action {
+    type: typeof UPDATE_HABIT_SUCCESS;
+    payload: UpdateHabitResponse;
+}
+export const updateHabitSuccessAction = (
+    _habit: UpdateHabitResponse
+): UpdateHabitSuccessAction => ({
+    type: UPDATE_HABIT_SUCCESS,
+    payload: _habit,
+});
+
+// Update habit fail action
+export interface UpdateHabitFailAction extends Action {
+    type: typeof UPDATE_HABIT_FAIL;
+    payload: {
+        error: string;
+    };
+}
+export const updateHabitFailAction = (
+    _error: string
+): UpdateHabitFailAction => ({
+    type: UPDATE_HABIT_FAIL,
     payload: {
         error: _error,
     },
@@ -288,4 +353,7 @@ export type HabitActions =
     | FetchTodayHabitsFailAction
     | DeleteHabitAction
     | DeleteHabitSuccessAction
-    | DeleteHabitFailAction;
+    | DeleteHabitFailAction
+    | UpdateHabitAction
+    | UpdateHabitSuccessAction
+    | UpdateHabitFailAction;

@@ -7,6 +7,8 @@ import {
     FETCH_TODAY_HABITS,
     FETCH_TODAY_HABITS_SUCCESS,
     HabitActions,
+    UPDATE_HABIT,
+    UPDATE_HABIT_SUCCESS,
     UPDATE_HABITLOG_SUCCESS,
 } from "./habit.action";
 
@@ -122,6 +124,88 @@ export const habitReducer = (
                     ),
                 },
             };
+        case UPDATE_HABIT:
+            return {
+                ...state,
+            };
+        case UPDATE_HABIT_SUCCESS:
+            let newState: HabitState = state;
+            if (action.payload.is_archived) {
+                newState = {
+                    ...state,
+                    data: state.data.filter((h) => h.id !== action.payload.id),
+                    today: {
+                        ...state.today,
+                        data: state.today.data.filter(
+                            (h) => h.id !== action.payload.id
+                        ),
+                    },
+                };
+                return newState;
+            }
+            const currentDay = new Date().getDay();
+            if (
+                action.payload.frequency_type === HabitFreqType.FIXED_DAYS &&
+                action.payload.frequency.length === 7
+            ) {
+                if (action.payload.frequency[currentDay] === "0") {
+                    newState.today.data = newState.today.data.filter(
+                        (h) => h.id !== action.payload.id
+                    );
+                } else if (
+                    !newState.today.data.find((h) => h.id === action.payload.id)
+                ) {
+                    newState.today.data = [
+                        ...newState.today.data,
+                        {
+                            id: action.payload.id,
+                            title: action.payload.title,
+                            description: action.payload.description,
+                            color: action.payload.color,
+                            is_done: false,
+                            note: "",
+                        },
+                    ];
+                }
+            }
+            newState = {
+                ...state,
+                data: state.data.map((h) =>
+                    h.id === action.payload.id
+                        ? {
+                              ...h,
+                              title: action.payload.title,
+                              description: action.payload.description,
+                              frequency_type: action.payload.frequency_type,
+                              frequency: String(action.payload.frequency),
+                              color: action.payload.color,
+                              is_archived: action.payload.is_archived,
+                          }
+                        : h
+                ),
+                today: state.today.isAlreadyFetched
+                    ? {
+                          ...state.today,
+                          data: state.today.data.map((h) =>
+                              h.id === action.payload.id
+                                  ? {
+                                        ...h,
+                                        title: action.payload.title,
+                                        description: action.payload.description,
+                                        frequency_type:
+                                            action.payload.frequency_type,
+                                        frequency: String(
+                                            action.payload.frequency
+                                        ),
+                                        color: action.payload.color,
+                                        is_archived: action.payload.is_archived,
+                                    }
+                                  : h
+                          ),
+                      }
+                    : { ...state.today },
+            };
+            return newState;
         default:
             return { ...state };
     }

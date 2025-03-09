@@ -29,6 +29,16 @@ export interface DeleteHabitResponse {
     id: string;
 }
 
+export interface UpdateHabitResponse {
+    id: string;
+    title: string;
+    description: string;
+    frequency_type: HabitFreqType;
+    frequency: string;
+    color: string;
+    is_archived: boolean;
+}
+
 const habitService = {
     getHabits: async (month: number, year: number): Promise<Habit[]> => {
         const res = await axiosInstance.get(
@@ -75,6 +85,25 @@ const habitService = {
     },
     deleteHabit: async (id: string): Promise<DeleteHabitResponse> => {
         const res = await axiosInstance.delete(`/api/habit/${id}`);
+        return res.data.data;
+    },
+    updateHabit: async (
+        id: string,
+        title: string,
+        description: string,
+        color: string,
+        f_type: HabitFreqType,
+        f: string,
+        is_archived: boolean
+    ): Promise<UpdateHabitResponse> => {
+        const res = await axiosInstance.put(`/api/habit/${id}`, {
+            title,
+            description,
+            color,
+            f_type,
+            f: String(f),
+            is_archived,
+        });
         return res.data.data;
     },
 };

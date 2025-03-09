@@ -12,6 +12,7 @@ import {
 import ConfirmDialogBox from "../../../../components/confirm-dialog-box/confirm-dialog-box";
 import { countMatchingDays, MONTH } from "../../../../utils/date.utils";
 import { colorMap } from "../../../../utils/color.utils";
+import UpdateHabit from "../../../../components/update-habit/update-habit";
 
 const HabitStickySideBar: React.FC<{ month: MONTH; year: number }> = ({
     month,
@@ -32,7 +33,7 @@ const HabitStickySideBar: React.FC<{ month: MONTH; year: number }> = ({
             <Flex direction="column" gap={"4"}>
                 {habits.map((habit) => (
                     <Box
-                        key={habit.id}
+                        key={`${habit.id}-${habit.title}-${habit.description}-${habit.frequency_type}-${habit.frequency}-${habit.color}`}
                         className="w-full relative group shadow-[var(--grass-2)] shadow-sm"
                     >
                         <div className="flex flex-row justify-between p-3 shadow-lg">
@@ -63,13 +64,15 @@ const HabitStickySideBar: React.FC<{ month: MONTH; year: number }> = ({
                             </Text>
                         </div>
                         <div className="absolute top-0 hidden group-hover:flex flex-row transition-all duration-300 justify-evenly items-center w-full h-full p-2 bg-[var(--gray-2)]">
-                            <Button
-                                className="w-[30%] cursor-pointer"
-                                variant="ghost"
-                                color="grass"
-                            >
-                                Edit
-                            </Button>
+                            <UpdateHabit habit={habit} tooltip="update habit">
+                                <Button
+                                    className="w-[45%] cursor-pointer"
+                                    variant="ghost"
+                                    color="grass"
+                                >
+                                    Edit
+                                </Button>
+                            </UpdateHabit>
                             <ConfirmDialogBox
                                 title="Are you sure?"
                                 onConfirm={() => deleteHabit(habit.id)}
@@ -78,20 +81,13 @@ const HabitStickySideBar: React.FC<{ month: MONTH; year: number }> = ({
                                 tooltip="delete habit"
                             >
                                 <Button
-                                    className="w-[30%] cursor-pointer"
+                                    className="w-[45%] cursor-pointer"
                                     variant="ghost"
                                     color="grass"
                                 >
                                     Delete
                                 </Button>
                             </ConfirmDialogBox>
-                            <Button
-                                className="w-[30%] cursor-pointer"
-                                variant="ghost"
-                                color="grass"
-                            >
-                                Archive
-                            </Button>
                         </div>
                     </Box>
                 ))}
