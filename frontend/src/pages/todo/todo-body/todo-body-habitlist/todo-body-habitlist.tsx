@@ -36,6 +36,13 @@ const TodoBodyHabitlist: React.FC = ({}) => {
     return (
         <Box className="w-full">
             <Flex direction="column" gap="3">
+                {habits.length == 0 && (
+                    <Box className="w-full text-center">
+                        <Text>
+                            🌱 No habits yet, add one now and start growing!
+                        </Text>
+                    </Box>
+                )}
                 {habits.map((h) => (
                     <Box
                         key={h.id}

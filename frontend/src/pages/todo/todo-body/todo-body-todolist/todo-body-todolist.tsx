@@ -29,6 +29,11 @@ const TodoBodyTodolist: React.FC = ({}) => {
     return (
         <Box className="w-full">
             <Flex direction="column" gap="3">
+                {todos.length == 0 && (
+                    <Box className="w-full text-center">
+                        <Text>No todos for today, make it count! 🚀</Text>
+                    </Box>
+                )}
                 {todos.map((t) => (
                     <Box
                         key={t.id}
