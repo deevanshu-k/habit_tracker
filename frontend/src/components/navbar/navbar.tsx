@@ -1,4 +1,3 @@
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { Box, Button, Flex, Heading } from "@radix-ui/themes";
 import React from "react";
 import { useSelector } from "react-redux";
@@ -11,7 +10,7 @@ type PropType = {
     toggleTheme: () => void;
 };
 
-const NavBar: React.FC<PropType> = ({ mod, toggleTheme }) => {
+const NavBar: React.FC<PropType> = () => {
     const navigate = useNavigate();
     const user = useSelector((state: StoreState) => state.user.data);
 
@@ -30,13 +29,14 @@ const NavBar: React.FC<PropType> = ({ mod, toggleTheme }) => {
                 </Box>
 
                 <Flex direction={"row"} align={"center"} gap={"2"}>
-                    <Button
+                    {/* Work in progress */
+                    /* <Button
                         className="cursor-pointer"
                         variant="soft"
                         onClick={toggleTheme}
                     >
                         {mod == "dark" ? <SunIcon /> : <MoonIcon />}
-                    </Button>
+                    </Button> */}
                     {user ? (
                         <ProfileDropDown />
                     ) : (
