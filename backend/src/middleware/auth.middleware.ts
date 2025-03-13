@@ -40,7 +40,7 @@ const authMiddleware = (
 
         next();
     } catch (error) {
-        res.json({
+        res.status(401).json({
             code: 401,
             message: UNAUTHORIZED_REQUEST,
         });
