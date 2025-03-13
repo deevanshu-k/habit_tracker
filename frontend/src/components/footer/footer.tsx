@@ -1,4 +1,4 @@
-import { Strong, Text } from "@radix-ui/themes";
+import { Link, Strong } from "@radix-ui/themes";
 
 function Footer() {
     return (
@@ -6,12 +6,12 @@ function Footer() {
             className="p-3 flex flex-row justify-center"
             style={{ borderTop: "2px solid var(--gray-5)" }}
         >
-            <Text>
+            <Link href="https://deevanshu.bio.link/">
                 Made by ❤️{" "}
                 <Strong style={{ textDecoration: "underline" }}>
                     Deevanshu Kushwah
                 </Strong>
-            </Text>
+            </Link>
         </footer>
     );
 }
