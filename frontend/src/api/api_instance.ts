@@ -1,4 +1,5 @@
 import axios from "axios";
+import authInterceptor from "./interceptors/auth.interceptor";
 
 export interface ResponseType<T> {
     code: number;
@@ -14,5 +15,8 @@ const axiosInstance = axios.create({
     },
     withCredentials: true,
 });
+
+// Add Interceptors
+authInterceptor(axiosInstance);
 
 export default axiosInstance;
