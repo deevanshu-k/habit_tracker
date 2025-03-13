@@ -1,4 +1,5 @@
 import { Habit, HabitFreqType, HabitState } from "../store.type";
+import { LOGOUT_USER_SUCCESS } from "../user/user.action";
 import {
     ADD_HABIT_SUCCESS,
     DELETE_HABIT_SUCCESS,
@@ -25,6 +26,14 @@ export const habitReducer = (
     action: HabitActions
 ): HabitState => {
     switch (action.type) {
+        case LOGOUT_USER_SUCCESS:
+            return {
+                data: [],
+                today: {
+                    data: [],
+                    isAlreadyFetched: false,
+                },
+            };
         case FETCH_TODAY_HABITS:
             return { ...state, today: { isAlreadyFetched: true, data: [] } };
         case FETCH_TODAY_HABITS_SUCCESS:

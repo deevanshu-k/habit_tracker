@@ -1,4 +1,5 @@
 import { TodoState } from "../store.type";
+import { LOGOUT_USER_SUCCESS } from "../user/user.action";
 import {
     ADD_TODO,
     ADD_TODO_SUCCESS,
@@ -23,6 +24,13 @@ export const todoReducer = (
     action: TodoActions
 ): TodoState => {
     switch (action.type) {
+        case LOGOUT_USER_SUCCESS:
+            return {
+                today: {
+                    isAlreadyFetched: false,
+                    data: [],
+                },
+            };
         case ADD_TODO:
             return { ...state };
         case ADD_TODO_SUCCESS:

@@ -1,6 +1,7 @@
 import { Action } from "redux";
 import { Habit, HabitFreqType, TodayHabit } from "../store.type";
 import { AddHabitResponse, UpdateHabitResponse } from "../../api/habit.api";
+import { LogoutUserSuccessAction } from "../user/user.action";
 
 // Action types
 export const FETCH_HABIT = "habit/fetch";
@@ -339,6 +340,7 @@ export const updateHabitFailAction = (
 
 // Actions
 export type HabitActions =
+    | LogoutUserSuccessAction
     | FetchHabitAction
     | FetchHabitSuccessAction
     | FetchHabitFailAction

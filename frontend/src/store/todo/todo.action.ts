@@ -1,5 +1,6 @@
 import { Action } from "redux";
 import { TodayTodo } from "../store.type";
+import { LogoutUserSuccessAction } from "../user/user.action";
 
 // Action types
 export const FETCH_TODAY_TODOS = "todo/today/fetch";
@@ -181,6 +182,7 @@ export const deleteTodoFailAction = (_error: string): DeleteTodoFailAction => ({
 
 // Actions
 export type TodoActions =
+    | LogoutUserSuccessAction
     | FetchTodayTodosAction
     | FetchTodayTodosSuccessAction
     | FetchTodayTodosFailAction
